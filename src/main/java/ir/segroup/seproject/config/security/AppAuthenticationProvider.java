@@ -2,6 +2,7 @@ package ir.segroup.seproject.config.security;
 
 import ir.segroup.seproject.config.exception.SystemServiceException;
 import ir.segroup.seproject.config.exception.constant.ExceptionMessages;
+import ir.segroup.seproject.ws.repository.UserRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
