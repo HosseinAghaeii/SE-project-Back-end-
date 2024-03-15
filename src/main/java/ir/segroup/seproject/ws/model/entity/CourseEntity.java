@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "courses")
 public class CourseEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String courseId;

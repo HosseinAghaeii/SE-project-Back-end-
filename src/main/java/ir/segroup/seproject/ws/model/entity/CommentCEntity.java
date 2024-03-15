@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class CommentCEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String publicId;

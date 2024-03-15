@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "colleges")
 public class CollegeEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String publicId;
