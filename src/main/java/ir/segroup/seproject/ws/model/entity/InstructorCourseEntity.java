@@ -27,8 +27,8 @@ public class InstructorCourseEntity implements Serializable {
     private CourseEntity courseEntity;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "instructor-id")
-    private UserEntity instructorEntity;
+    @JoinColumn(name = "instructor_id")
+    private InstructorEntity instructorEntity;
 
     private String description;
 

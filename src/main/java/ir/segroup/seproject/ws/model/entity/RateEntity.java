@@ -30,5 +30,5 @@ public class RateEntity implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
-    private UserEntity studentEntity;
+    private StudentEntity studentEntity;
 }

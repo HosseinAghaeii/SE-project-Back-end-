@@ -42,6 +42,6 @@ public class AcademicDepartmentEntity implements Serializable {
             joinColumns = @JoinColumn(name = "academicDept_id"),
             inverseJoinColumns = @JoinColumn(name = "instructor_id")
     )
-    private List<UserEntity> instructorEntities;
+    private List<InstructorEntity> instructorEntities;
 
 }

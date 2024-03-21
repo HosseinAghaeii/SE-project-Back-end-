@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,18 +22,13 @@ public class UserEntity implements Serializable {
 
     private String lastname;
 
+    @Column(nullable = false,unique = true)
     private String username;
 
     @Column(name = "password")
     private String encryptedPassword;
 
     private String role;
-
-    private Date birthDate;
-
-    private String email;
-
-    private String major;
 
     private String profilePhoto;
 
@@ -61,20 +56,5 @@ public class UserEntity implements Serializable {
 
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<CommentCEntity> commentCEntities;
-
-    //================================================ Teacher Fields
-
-    @OneToMany(mappedBy = "instructorEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<InstructorCourseEntity> icEntities;
-
-    @ManyToMany(mappedBy = "instructorEntities",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<AcademicDepartmentEntity> academicDeptEntities; // list of academic dept that instructor worked on it.
-
-    //================================================ Student Fields
-
-    @OneToMany(mappedBy = "studentEntity",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<RateEntity> rateEntities; // the list of all rate of student
-
-
 }
 
