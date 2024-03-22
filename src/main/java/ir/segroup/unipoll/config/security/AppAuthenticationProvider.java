@@ -43,7 +43,7 @@ public class AppAuthenticationProvider implements AuthenticationProvider {
                         return new UsernamePasswordAuthenticationToken(userName, password, authorities);
 
                     } else {
-                        throw new BadCredentialsException(ExceptionMessages.CHECK_SECURITY.getMessage());
+                        throw new SystemServiceException(ExceptionMessages.CHECK_SECURITY.getMessage(),HttpStatus.FORBIDDEN);
                     }
                 })
                 .orElseThrow(() -> new SystemServiceException(ExceptionMessages.CHECK_SECURITY.getMessage(), HttpStatus.FORBIDDEN));
