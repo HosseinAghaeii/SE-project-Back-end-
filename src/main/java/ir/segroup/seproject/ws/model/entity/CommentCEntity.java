@@ -1,19 +1,20 @@
 package ir.segroup.seproject.ws.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "course_comment")
+@Table(name = "course_comments")
+@EntityListeners(AuditingEntityListener.class)
 public class CommentCEntity implements Serializable {
 
     @Id
@@ -25,6 +26,9 @@ public class CommentCEntity implements Serializable {
     private String text;
 
     private String term; // ##-#   year-1 OR 2
+
+    @CreatedDate
+    private Date created;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

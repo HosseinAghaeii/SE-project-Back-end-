@@ -5,15 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name = "booklet_commands")
+@Table(name = "booklet_comments")
+@EntityListeners(AuditingEntityListener.class)
 public class CommentBEntity implements Serializable {
 
     @Id
@@ -23,6 +27,9 @@ public class CommentBEntity implements Serializable {
     private String publicId;
 
     private String text;
+
+    @CreatedDate
+    private Date created;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
