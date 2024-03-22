@@ -47,10 +47,16 @@ public class UserServiceImpl implements UserService {
             savedUser = userRepository.save(userEntity);
 
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Problem to write in db");
+            logger.log(Level.WARNING, "Problem to write in DB");
             throw new SystemServiceException(ExceptionMessages.DATABASE_IO_EXCEPTION.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         UserResponse userResponse = utils.convert(savedUser);
         return utils.createResponse(userResponse, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> getAllUsers() {
+        List<UserResponse> result = userRepository.findAll().stream().map(utils::convert).toList();
+        return utils.createResponse(result,HttpStatus.OK);
     }
 }
