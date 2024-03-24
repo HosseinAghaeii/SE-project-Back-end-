@@ -19,15 +19,19 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String jwt = null;
         if (null != authentication) {
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-            String jwt = Jwts.builder()
+             jwt = Jwts.builder()
                     .issuer("UniPoll")
                     .subject("jwToken")
                     .claim("username", authentication.getName())
@@ -37,6 +41,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
                     .signWith(key).compact();
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);
         }
+        logger.log(Level.INFO,"jwt token generated: {0}",jwt);
         filterChain.doFilter(request, response);
     }
 
