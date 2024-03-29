@@ -47,6 +47,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/v3/api-docs/**")).permitAll();
                     requests.requestMatchers("/login").permitAll();
                     requests.requestMatchers("/course").permitAll();
+                    requests.requestMatchers("/college").permitAll();
                 })
                 .httpBasic(Customizer.withDefaults());
         return http.build();
