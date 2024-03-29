@@ -41,11 +41,12 @@ public class AppSecurityConfig {
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
-                    requests.requestMatchers(antMatcher("/user")).hasRole("ADMIN");
+                    requests.requestMatchers(antMatcher("/user/**")).hasRole("ADMIN");
                     requests.requestMatchers(antMatcher("/doc/**")).permitAll();
                     requests.requestMatchers(antMatcher("/swagger-ui/**")).permitAll();
                     requests.requestMatchers(antMatcher("/v3/api-docs/**")).permitAll();
                     requests.requestMatchers("/login").permitAll();
+                    requests.requestMatchers("/course").permitAll();
                 })
                 .httpBasic(Customizer.withDefaults());
         return http.build();

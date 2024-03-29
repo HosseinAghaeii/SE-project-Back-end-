@@ -20,7 +20,7 @@ public class CourseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String courseId;
+    private String publicId;
 
     private String name;
 
