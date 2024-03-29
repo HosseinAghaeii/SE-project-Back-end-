@@ -2,6 +2,7 @@ package ir.segroup.unipoll;
 
 import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -42,6 +43,11 @@ public class UniPollApplication {
                 logger.log(Level.WARNING, "CommandLineRunner exception: {0}", exception.getMessage());
             }
         };
+    }
+
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
     }
 
 }

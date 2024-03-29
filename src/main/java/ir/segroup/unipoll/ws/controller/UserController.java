@@ -8,8 +8,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
+import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.UserRequest;
+import ir.segroup.unipoll.ws.repository.UserRepository;
 import ir.segroup.unipoll.ws.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +28,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping
@@ -76,6 +81,12 @@ public class UserController {
     })
     public ResponseEntity<BaseApiResponse> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<UserEntity> getUsr(@PathVariable String username){
+        UserEntity userEntity = userRepository.findByUsername(username).get();
+        return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
 
 

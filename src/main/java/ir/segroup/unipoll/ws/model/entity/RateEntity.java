@@ -20,8 +20,6 @@ public class RateEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String publicId;
-
     private double number;
 
     @ManyToOne(cascade = CascadeType.ALL)

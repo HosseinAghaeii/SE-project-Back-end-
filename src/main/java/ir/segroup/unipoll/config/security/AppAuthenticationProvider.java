@@ -16,9 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Configuration
 public class AppAuthenticationProvider implements AuthenticationProvider {
+
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -32,6 +36,8 @@ public class AppAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
         String password = authentication.getCredentials().toString();
+        logger.log(Level.INFO,"username: {0}",userName);
+        logger.log(Level.INFO,"password: {0}",password);
         return userRepository.findByUsername(userName)
                 .map(userEntity -> {
                     if (passwordEncoder.matches(password, userEntity.getEncryptedPassword())) {
@@ -39,7 +45,7 @@ public class AppAuthenticationProvider implements AuthenticationProvider {
                         authorities.add(
                                 new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().toUpperCase())
                         );
-
+                        logger.log(Level.INFO,"authentication is successfully");
                         return new UsernamePasswordAuthenticationToken(userName, password, authorities);
 
                     } else {

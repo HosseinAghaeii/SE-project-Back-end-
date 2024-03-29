@@ -3,7 +3,7 @@ package ir.segroup.unipoll.ws.service.impl;
 import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
-import ir.segroup.unipoll.shared.utils.Utils;
+import ir.segroup.unipoll.shared.utils.UserUtil;
 import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.UserRequest;
 import ir.segroup.unipoll.ws.model.response.UserResponse;
@@ -22,13 +22,13 @@ import java.util.logging.Logger;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final Utils utils;
+    private final UserUtil util;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public UserServiceImpl(UserRepository userRepository, Utils convertor) {
+    public UserServiceImpl(UserRepository userRepository, UserUtil convertor) {
         this.userRepository = userRepository;
 
-        this.utils = convertor;
+        this.util = convertor;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         if (!validRoles.contains(userRequest.getRole())) {
             throw new SystemServiceException(ExceptionMessages.INVALID_ROLE.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        UserEntity userEntity = utils.convert(userRequest);
+        UserEntity userEntity = util.convert(userRequest);
         UserEntity savedUser;
         try {
             savedUser = userRepository.save(userEntity);
@@ -50,13 +50,13 @@ public class UserServiceImpl implements UserService {
             logger.log(Level.WARNING, "Problem to write in DB");
             throw new SystemServiceException(ExceptionMessages.DATABASE_IO_EXCEPTION.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        UserResponse userResponse = utils.convert(savedUser);
-        return utils.createResponse(userResponse, HttpStatus.CREATED);
+        UserResponse userResponse = util.convert(savedUser);
+        return util.createResponse(userResponse, HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<BaseApiResponse> getAllUsers() {
-        List<UserResponse> result = userRepository.findAll().stream().map(utils::convert).toList();
-        return utils.createResponse(result,HttpStatus.OK);
+        List<UserResponse> result = userRepository.findAll().stream().map(util::convert).toList();
+        return util.createResponse(result,HttpStatus.OK);
     }
 }
