@@ -44,4 +44,10 @@ public class AcademicDepartmentEntity implements Serializable {
     )
     private List<InstructorEntity> instructorEntities;
 
+    @OneToMany(mappedBy = "AcademicDepartmentEntityOfManager", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<InstructorEntity> managersOfAcademicDepartment;
+
+    @OneToMany(mappedBy = "AcademicDepartmentEntityOfAssistant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<InstructorEntity> assistantsOfAcademicDepartment;
+
 }

@@ -29,6 +29,14 @@ public class InstructorEntity extends UserEntity{
     @ManyToMany(mappedBy = "instructorEntities",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AcademicDepartmentEntity> academicDeptEntities; // list of academic dept that instructor worked on it.
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id_for_manager")
+    private AcademicDepartmentEntity AcademicDepartmentEntityOfManager;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id_for_assistant")
+    private AcademicDepartmentEntity AcademicDepartmentEntityOfAssistant;
+
     public InstructorEntity(String firstname,
                             String lastname,
                             String username,
