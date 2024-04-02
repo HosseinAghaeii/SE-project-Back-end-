@@ -1,5 +1,7 @@
 package ir.segroup.unipoll.ws.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +21,8 @@ public class AcademicDepartmentEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    private String name;
 
     private String publicId;
 
@@ -44,10 +48,12 @@ public class AcademicDepartmentEntity implements Serializable {
     )
     private List<InstructorEntity> instructorEntities;
 
-    @OneToMany(mappedBy = "AcademicDepartmentEntityOfManager", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<InstructorEntity> managersOfAcademicDepartment;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "manager_id")
+    private InstructorEntity manager;
 
-    @OneToMany(mappedBy = "AcademicDepartmentEntityOfAssistant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<InstructorEntity> assistantsOfAcademicDepartment;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "assistant_id")
+    private InstructorEntity assistant;
 
 }

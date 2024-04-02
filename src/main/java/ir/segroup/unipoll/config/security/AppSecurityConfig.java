@@ -49,6 +49,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers("/course").permitAll();
                     requests.requestMatchers("/college").permitAll();
                     requests.requestMatchers("/booklet/**").permitAll();
+                    requests.requestMatchers("/academic-department/**").permitAll();
                 })
                 .httpBasic(Customizer.withDefaults());
         return http.build();
