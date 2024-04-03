@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.PublicKey;
-
 @RestController
 @RequestMapping("/academic-department")
 public class AcademicDepartmentController {
@@ -19,23 +17,23 @@ public class AcademicDepartmentController {
         this.academicDepartmentService = academicDepartmentService;
     }
 
-    @GetMapping("/{departmentName}")
-    public ResponseEntity<BaseApiResponse> getAcademicDepartment(@PathVariable String departmentName) {
-        return academicDepartmentService.getDescription(departmentName);
+    @GetMapping
+    public ResponseEntity<BaseApiResponse> getAllAcademicDepartment() {
+        return academicDepartmentService.getAllDepartments();
     }
 
-    @GetMapping("/manger-and-assistant/{departmentName}")
-    public ResponseEntity<BaseApiResponse> getManagerAndAssistantAcademicDepartment(@PathVariable String departmentName) {
-        return academicDepartmentService.getManagerAndAssistant(departmentName);
+    @GetMapping("/{publicId}/manger-and-assistant")
+    public ResponseEntity<BaseApiResponse> getManagerAndAssistantAcademicDepartment(@PathVariable String publicId) {
+        return academicDepartmentService.getManagerAndAssistant(publicId);
     }
 
-    @GetMapping("/instructors/{departmentName}")
-    public ResponseEntity<BaseApiResponse> getInstructorsAcademicDepartment(@PathVariable String departmentName) {
-        return academicDepartmentService.getInstructors(departmentName);
+    @GetMapping("/{publicId}/instructors")
+    public ResponseEntity<BaseApiResponse> getInstructorsAcademicDepartment(@PathVariable String publicId) {
+        return academicDepartmentService.getInstructors(publicId);
     }
 
-    @GetMapping("/courses/{departmentName}")
-    public ResponseEntity<BaseApiResponse> getCoursesAcademicDepartment(@PathVariable String departmentName) {
-        return academicDepartmentService.getCourses(departmentName);
+    @GetMapping("/{publicId}/courses")
+    public ResponseEntity<BaseApiResponse> getCoursesAcademicDepartment(@PathVariable String publicId) {
+        return academicDepartmentService.getCourses(publicId);
     }
 }

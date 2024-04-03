@@ -4,7 +4,7 @@ import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.ws.model.entity.AcademicDepartmentEntity;
 import ir.segroup.unipoll.ws.model.response.DepartmentCourseResponse;
-import ir.segroup.unipoll.ws.model.response.DepartmentDescriptionResponse;
+import ir.segroup.unipoll.ws.model.response.DepartmentResponse;
 import ir.segroup.unipoll.ws.model.response.DepartmentInstructorResponse;
 import ir.segroup.unipoll.ws.model.response.DepartmentManagerAndAssistantResponse;
 import ir.segroup.unipoll.ws.repository.AcademicDepartmentRepository;
@@ -27,15 +27,15 @@ public class AcademicDepartmentUtil extends Util {
         this.academicDepartmentRepository = academicDepartmentRepository;
     }
 
-    public AcademicDepartmentEntity find(String departmentName) {
-        Optional<AcademicDepartmentEntity> existedDepartment = academicDepartmentRepository.findByName(departmentName);
+    public AcademicDepartmentEntity find(String publicId) {
+        Optional<AcademicDepartmentEntity> existedDepartment = academicDepartmentRepository.findByPublicId(publicId);
         if (existedDepartment.isEmpty())
             throw new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
         return existedDepartment.get();
     }
 
-    public DepartmentDescriptionResponse convert(AcademicDepartmentEntity department) {
-        return modelMapper.map(department, DepartmentDescriptionResponse.class);
+    public DepartmentResponse convert(AcademicDepartmentEntity department) {
+        return modelMapper.map(department, DepartmentResponse.class);
     }
 
     public List<DepartmentManagerAndAssistantResponse> managerAndAssistantConvert(AcademicDepartmentEntity department) {
@@ -85,7 +85,7 @@ public class AcademicDepartmentUtil extends Util {
         List<DepartmentCourseResponse> result = new ArrayList<>();
         department.getCourseEntities()
                 .forEach(course -> result.add(DepartmentCourseResponse.builder()
-                        .name(course.getName())
+                        .courseName(course.getName())
                         .publicId(course.getPublicId())
                         .build()));
         return result;

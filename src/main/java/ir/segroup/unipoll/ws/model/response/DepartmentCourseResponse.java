@@ -9,5 +9,5 @@ import lombok.*;
 @Builder
 public class DepartmentCourseResponse {
     private String publicId;
-    private String name;
+    private String courseName;
 }
