@@ -73,17 +73,19 @@ public class BookletServiceImpl implements BookletService {
     public ResponseEntity<BaseApiResponse> getTenTopBooklets() {
         HashMap<String,Integer> likesNumberMap = new HashMap<>();
         bookletRepository.findAll().forEach(b -> likesNumberMap.put(b.getPublicId(),b.getLikes().size()));
-        List<String> tenTopPublicId = likesNumberMap.entrySet()
+        List<String> tenTopPublicIdList = likesNumberMap.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
                 .limit(10)
                 .map(Map.Entry::getKey)
                 .toList();
-        return bookletUtil.createResponse(tenTopPublicId
+        return bookletUtil.createResponse(tenTopPublicIdList
 //                                          .stream()
 //                                          .map(bookletPublicId -> {
 //                                              BookletEntity bookletEntity = bookletRepository.findByPublicId(bookletPublicId).get();
 //                                          })
                 ,HttpStatus.OK);
     }
+
+
 }
