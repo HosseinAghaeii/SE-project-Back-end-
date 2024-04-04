@@ -1,5 +1,7 @@
 package ir.segroup.unipoll.ws.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +30,12 @@ public class InstructorEntity extends UserEntity{
 
     @ManyToMany(mappedBy = "instructorEntities",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AcademicDepartmentEntity> academicDeptEntities; // list of academic dept that instructor worked on it.
+
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<AcademicDepartmentEntity> academicDepForManagers; // list of academic dept that instructor has role as manager.
+
+    @OneToMany(mappedBy = "assistant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<AcademicDepartmentEntity> academicDepForAssistants; // list of academic dept that instructor has a role as assistant.
 
     public InstructorEntity(String firstname,
                             String lastname,
