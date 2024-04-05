@@ -4,11 +4,12 @@ import ir.segroup.unipoll.shared.model.BaseApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-
-abstract class Util {
+@Component
+public class Util {
 
     public ResponseEntity<BaseApiResponse> createResponse(Object object, HttpStatus httpStatus) {
         BaseApiResponse baseApiResponse = BaseApiResponse.builder()

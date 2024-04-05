@@ -14,7 +14,6 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String firstname;
@@ -56,7 +55,8 @@ public class UserEntity implements Serializable {
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<CommentCEntity> commentCEntities;
 
-    public UserEntity(String firstname, String lastname, String username, String encryptedPassword, String role) {
+    public UserEntity(String id,String firstname, String lastname, String username, String encryptedPassword, String role) {
+        this.id = Long.parseLong(id);
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;

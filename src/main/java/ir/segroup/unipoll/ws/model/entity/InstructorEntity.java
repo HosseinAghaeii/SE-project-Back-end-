@@ -29,20 +29,4 @@ public class InstructorEntity extends UserEntity{
     @ManyToMany(mappedBy = "instructorEntities",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AcademicDepartmentEntity> academicDeptEntities; // list of academic dept that instructor worked on it.
 
-    public InstructorEntity(String firstname,
-                            String lastname,
-                            String username,
-                            String encryptedPassword,
-                            String role, String phd,
-                            String academicRank,
-                            String phoneNumber,
-                            String email,
-                            String websiteLink) {
-        super(firstname, lastname, username, encryptedPassword, role);
-        this.phd = phd;
-        this.academicRank = academicRank;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.websiteLink = websiteLink;
-    }
 }

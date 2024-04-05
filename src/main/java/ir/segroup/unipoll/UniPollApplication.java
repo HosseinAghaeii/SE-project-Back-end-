@@ -26,7 +26,8 @@ public class UniPollApplication {
             Logger logger = Logger.getLogger(this.getClass().getName());
             try {
 
-                UserEntity admin = new UserEntity(environment.getProperty("admin.first-name"),
+                UserEntity admin = new UserEntity(environment.getProperty("admin.id"),
+                        environment.getProperty("admin.first-name"),
                         environment.getProperty("admin.last-name"),
                         environment.getProperty("admin.username"),
                         new BCryptPasswordEncoder().encode(environment.getProperty("admin.password")),

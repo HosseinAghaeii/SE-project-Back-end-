@@ -5,6 +5,5 @@ import ir.segroup.unipoll.ws.model.request.UserRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-    ResponseEntity<BaseApiResponse> createUser(UserRequest userRequest);
     ResponseEntity<BaseApiResponse> getAllUsers();
 }
