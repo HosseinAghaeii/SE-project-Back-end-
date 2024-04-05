@@ -30,6 +30,14 @@ public class Validator {
         }
     }
 
+    public void checkNumericFormat(Cell cell,String sheetName,String fieldName){
+        if (!cell.getCellType().equals(CellType.NUMERIC)) {
+            String logMsg = sheetName + "(" + fieldName + "): " + "This field must be Numeric";
+            logger.log(Level.OFF, logMsg);
+            throw new SystemServiceException(ExceptionMessages.ID_MUST_BE_DIGIT.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
     public void checkStringFormat(Cell cell, String sheetName,String fieldName) {
         if (!cell.getCellType().equals(CellType.STRING)) {
             String logMsg = sheetName + "(" + fieldName + "): " + "This field must be String";

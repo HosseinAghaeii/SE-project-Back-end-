@@ -19,7 +19,6 @@ import java.util.List;
 @Table(name = "academic_departments")
 public class AcademicDepartmentEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;

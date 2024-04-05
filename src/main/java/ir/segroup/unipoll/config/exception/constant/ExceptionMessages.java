@@ -18,6 +18,10 @@ public enum ExceptionMessages {
     COULD_NOT_WORK_WITH_EXCEL("Can`t open and close port"),
     NO_EXCEL_FORMAT("Uploaded file is not excel file"),
     INPUT_STREAM_ERROR("There is an error about work with input stream"),
+    NO_RECORD_FOUND("Record is not found"),
+    FILE_EXCEPTION("Exception is related to file"),
+    EMPTY_FILE("File is empty"),
+    COULD_NOT_CREAT_DIRECTORY("Could not create the directory where the uploaded files will be stored")
     ;
 
     private final String message;

@@ -36,21 +36,4 @@ public class InstructorEntity extends UserEntity{
 
     @OneToMany(mappedBy = "assistant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<AcademicDepartmentEntity> academicDepForAssistants; // list of academic dept that instructor has a role as assistant.
-
-    public InstructorEntity(String firstname,
-                            String lastname,
-                            String username,
-                            String encryptedPassword,
-                            String role, String phd,
-                            String academicRank,
-                            String phoneNumber,
-                            String email,
-                            String websiteLink) {
-        super(firstname, lastname, username, encryptedPassword, role);
-        this.phd = phd;
-        this.academicRank = academicRank;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.websiteLink = websiteLink;
-    }
 }
