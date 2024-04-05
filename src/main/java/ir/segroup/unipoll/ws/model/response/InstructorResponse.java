@@ -1,5 +1,6 @@
 package ir.segroup.unipoll.ws.model.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,20 @@ public class InstructorResponse extends UserResponse{
                               String email,
                               String websiteLink) {
         super(username, firstname, lastname, role);
+        this.phd = phd;
+        this.academicRank = academicRank;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.websiteLink = websiteLink;
+    }
+    public InstructorResponse(String firstname,
+                              String lastname,
+                              String phd,
+                              String academicRank,
+                              String phoneNumber,
+                              String email,
+                              String websiteLink) {
+        super(firstname, lastname);
         this.phd = phd;
         this.academicRank = academicRank;
         this.phoneNumber = phoneNumber;

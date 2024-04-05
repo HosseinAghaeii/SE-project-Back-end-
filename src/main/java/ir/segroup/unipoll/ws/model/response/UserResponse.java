@@ -1,15 +1,13 @@
 package ir.segroup.unipoll.ws.model.response;
 
 import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserResponse {
     private String username;
 
@@ -18,4 +16,9 @@ public class UserResponse {
     private String lastname;
 
     private String role;
+
+    public UserResponse(String firstname, String lastname) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
 }
