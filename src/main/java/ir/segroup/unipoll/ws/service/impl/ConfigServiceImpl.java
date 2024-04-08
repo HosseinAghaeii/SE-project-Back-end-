@@ -65,6 +65,7 @@ public class ConfigServiceImpl  implements ConfigService {
             logger.log(Level.OFF,e.getMessage());
             throw new SystemServiceException(ExceptionMessages.INPUT_STREAM_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        newUsers.forEach(userEntity -> userEntity.setPublicId(UUID.randomUUID().toString())); // set publicId for new user
         List<String> newUsernames = new ArrayList<>(newUsers.stream().map(UserEntity::getUsername).toList());
 
         List<UserEntity> existedUsers = userRepository.findAll();

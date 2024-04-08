@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 @Tag(name = "Users", description = "User endpoints")
 public class UserController {
-
     private final UserService userService;
 
     public UserController(UserService userService) {

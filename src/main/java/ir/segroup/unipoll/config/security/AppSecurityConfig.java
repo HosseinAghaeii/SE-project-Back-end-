@@ -21,6 +21,9 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 
 @Configuration
 public class AppSecurityConfig {
+    private static final String ADMIN = "ADMIN";
+    private static final String STUDENT = "STUDENT";
+    private static final String INSTRUCTOR = "INSTRUCTOR";
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -41,16 +44,18 @@ public class AppSecurityConfig {
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
-                    requests.requestMatchers(antMatcher("/user/**")).hasRole("ADMIN");
-                    requests.requestMatchers(antMatcher("/config")).hasRole("ADMIN");
+                    requests.requestMatchers(antMatcher("/user/**")).hasRole(ADMIN);
+                    requests.requestMatchers(antMatcher("/config")).hasRole(ADMIN);
                     requests.requestMatchers(antMatcher("/doc/**")).permitAll();
                     requests.requestMatchers(antMatcher("/swagger-ui/**")).permitAll();
                     requests.requestMatchers(antMatcher("/v3/api-docs/**")).permitAll();
-                    requests.requestMatchers("/login").permitAll();
-                    requests.requestMatchers("/course").permitAll();
-                    requests.requestMatchers("/college").permitAll();
-                    requests.requestMatchers("/booklet/**").permitAll();
-                    requests.requestMatchers("/academic-department/**").permitAll();
+                    requests.requestMatchers(antMatcher("/login")).permitAll();
+                    requests.requestMatchers(antMatcher("/course")).permitAll();
+                    requests.requestMatchers(antMatcher("/college")).permitAll();
+                    requests.requestMatchers(antMatcher("/booklet/**")).permitAll();
+                    requests.requestMatchers(antMatcher("/booklet/**")).permitAll(); //لیست جزوه های برتر
+                    requests.requestMatchers(antMatcher("/booklet/file/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); //آپلود و دانلود جزوه
+                    requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
                 })
                 .httpBasic(Customizer.withDefaults());
         return http.build();

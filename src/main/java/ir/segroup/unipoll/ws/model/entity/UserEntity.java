@@ -16,6 +16,8 @@ public class UserEntity implements Serializable {
     @Id
     private long id;
 
+    private String publicId;
+
     private String firstname;
 
     private String lastname;
