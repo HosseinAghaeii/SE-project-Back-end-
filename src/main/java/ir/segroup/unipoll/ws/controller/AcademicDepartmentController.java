@@ -22,6 +22,11 @@ public class AcademicDepartmentController {
         return academicDepartmentService.getAllDepartments();
     }
 
+    @GetMapping("/{publicId}")
+    public ResponseEntity<BaseApiResponse> getAAcademicDepartment(@PathVariable String publicId) {
+        return academicDepartmentService.getADepartment(publicId);
+    }
+
     @GetMapping("/{publicId}/manger-and-assistant")
     public ResponseEntity<BaseApiResponse> getManagerAndAssistantAcademicDepartment(@PathVariable String publicId) {
         return academicDepartmentService.getManagerAndAssistant(publicId);
