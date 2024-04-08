@@ -6,6 +6,6 @@ public class SecurityConstants {
 
     }
 
-    public static final String JWT_KEY = "qSdEewYUdG3nQVGjUCqchCNxHysymkMFGTHqrfTXUEy6CmmgBXESHKHK";
+    public static final String JWT_KEY = "eyJhbGciOiJIUzM4NCJ9oew0KICAic3ViIjogIjEyMzQ1Njc4OTAiLA0KICAibmFtZSI6ICJBbmlzaCBOYXRoIiwNCiAgImlhdCI6IDE1MTYyMzkwMjINCn0oqnFaagystiw6ra2msUh9La3Z";
     public static final String JWT_HEADER = "Authorization";
 }

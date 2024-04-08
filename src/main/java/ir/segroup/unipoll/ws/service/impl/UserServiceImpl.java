@@ -23,35 +23,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserUtil util;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public UserServiceImpl(UserRepository userRepository, UserUtil convertor) {
         this.userRepository = userRepository;
 
         this.util = convertor;
-    }
-
-    @Override
-    public ResponseEntity<BaseApiResponse> createUser(UserRequest userRequest) {
-        Optional<UserEntity> existedUser = userRepository.findByUsername(userRequest.getUsername());
-        if (existedUser.isPresent()) {
-            throw new SystemServiceException(ExceptionMessages.RECORD_ALREADY_EXISTS.getMessage(), HttpStatus.CONFLICT);
-        }
-        List<String> validRoles = List.of("ADMIN", "STUDENT", "INSTRUCTOR");
-        if (!validRoles.contains(userRequest.getRole())) {
-            throw new SystemServiceException(ExceptionMessages.INVALID_ROLE.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        UserEntity userEntity = util.convert(userRequest);
-        UserEntity savedUser;
-        try {
-            savedUser = userRepository.save(userEntity);
-
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "Problem to write in DB");
-            throw new SystemServiceException(ExceptionMessages.DATABASE_IO_EXCEPTION.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        UserResponse userResponse = util.convert(savedUser);
-        return util.createResponse(userResponse, HttpStatus.CREATED);
     }
 
     @Override

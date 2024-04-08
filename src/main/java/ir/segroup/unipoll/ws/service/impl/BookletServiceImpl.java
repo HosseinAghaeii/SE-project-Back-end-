@@ -6,6 +6,7 @@ import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.shared.utils.BookletUtil;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
+import ir.segroup.unipoll.ws.model.response.BookletResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
 import org.slf4j.Logger;
@@ -70,7 +71,12 @@ public class BookletServiceImpl implements BookletService {
     }
 
     @Override
-    public ResponseEntity<BaseApiResponse> getTenTopBooklets() {
+    public ResponseEntity<BaseApiResponse> getTenTopBooklets(String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        BookletResponse response = new BookletResponse();
+
+        //userRepo
+
         HashMap<String,Integer> likesNumberMap = new HashMap<>();
         bookletRepository.findAll().forEach(b -> likesNumberMap.put(b.getPublicId(),b.getLikes().size()));
         List<String> tenTopPublicIdList = likesNumberMap.entrySet()
@@ -86,6 +92,7 @@ public class BookletServiceImpl implements BookletService {
 //                                          })
                 ,HttpStatus.OK);
     }
+
 
 
 }

@@ -10,6 +10,7 @@ import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class BookletController {
         this.bookletService = bookletService;
     }
 
-    @GetMapping("/{publicId}")
+    @GetMapping("/file/{publicId}")
     @Operation(summary = "Download a booklet from database")
     @ApiResponses(value = {
             @ApiResponse(
@@ -50,7 +51,7 @@ public class BookletController {
         return bookletService.downloadBooklet(publicId);
     }
 
-    @PostMapping
+    @PostMapping("/file")
     @Operation(summary = "Upload a new booklet into database")
     @ApiResponses(value = {
             @ApiResponse(
@@ -75,7 +76,11 @@ public class BookletController {
     }
 
     @GetMapping
-    public ResponseEntity<BaseApiResponse> getTenTopBooklets() {
-        return bookletService.getTenTopBooklets();
+    public ResponseEntity<BaseApiResponse> getTenTopBooklets(HttpServletRequest request) {
+        String token = request.getHeader("Athorization");
+        return bookletService.getTenTopBooklets(token);
     }
+
+
+
 }

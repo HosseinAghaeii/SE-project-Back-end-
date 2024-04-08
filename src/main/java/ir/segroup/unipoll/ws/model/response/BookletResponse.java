@@ -16,6 +16,6 @@ public class BookletResponse {
     private String uploaderLastname;
     private String term;
     private int likeNumber;
-    private boolean saved;
-    private boolean liked;
+    private boolean isSaved;
+    private boolean isLiked;
 }

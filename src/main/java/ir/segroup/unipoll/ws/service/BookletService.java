@@ -8,5 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface BookletService  {
     ResponseEntity<byte[]> downloadBooklet(String publicId);
     ResponseEntity<BaseApiResponse> uploadBooklet(MultipartFile booklet, BookletRequest bookletRequest);
-    ResponseEntity<BaseApiResponse> getTenTopBooklets();
+    ResponseEntity<BaseApiResponse> getTenTopBooklets(String token);
 }

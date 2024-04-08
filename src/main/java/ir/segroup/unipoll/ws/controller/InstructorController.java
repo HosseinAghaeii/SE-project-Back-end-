@@ -21,4 +21,6 @@ public class InstructorController {
     public ResponseEntity<BaseApiResponse> filterInstructor(@RequestParam String filteredName) {
         return instructorService.findInstructor(filteredName);
     }
+
+
 }

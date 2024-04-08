@@ -17,52 +17,6 @@ public class UserUtil extends Util{
     private static final String STUDENT = "STUDENT";
     private static final String INSTRUCTOR = "INSTRUCTOR";
 
-    private final PasswordEncoder passwordEncoder;
-
-    public UserUtil(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public UserEntity convert(UserRequest userRequest) {
-        UserEntity result;
-
-        switch (userRequest.getRole()) {
-            case ADMIN: {
-                result = new UserEntity(userRequest.getFirstname(),
-                        userRequest.getLastname(),
-                        userRequest.getUsername(),
-                        passwordEncoder.encode(userRequest.getPassword()),
-                        userRequest.getRole());
-            }
-            break;
-            case STUDENT: {
-                result = new StudentEntity(userRequest.getFirstname(),
-                        userRequest.getLastname(),
-                        userRequest.getUsername(),
-                        passwordEncoder.encode(userRequest.getPassword()),
-                        userRequest.getRole(),
-                        userRequest.getMajor());
-            }
-            break;
-            case INSTRUCTOR: {
-                result = new InstructorEntity(userRequest.getFirstname(),
-                        userRequest.getLastname(),
-                        userRequest.getUsername(),
-                        passwordEncoder.encode(userRequest.getPassword()),
-                        userRequest.getRole(),
-                        userRequest.getPhd(),
-                        userRequest.getAcademicRank(),
-                        userRequest.getPhoneNumber(),
-                        userRequest.getEmail(),
-                        userRequest.getWebsiteLink());
-            }
-            break;
-            default:
-                result = null;
-                break;
-        }
-        return result;
-    }
 
     public UserResponse convert(UserEntity userEntity) {
 
