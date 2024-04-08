@@ -49,6 +49,8 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/doc/**")).permitAll();
                     requests.requestMatchers(antMatcher("/swagger-ui/**")).permitAll();
                     requests.requestMatchers(antMatcher("/v3/api-docs/**")).permitAll();
+               
+                    requests.requestMatchers("/comment/**").permitAll();
                     requests.requestMatchers(antMatcher("/login")).permitAll();
                     requests.requestMatchers(antMatcher("/course")).permitAll();
                     requests.requestMatchers(antMatcher("/college")).permitAll();
@@ -56,6 +58,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/booklet/**")).permitAll(); //لیست جزوه های برتر
                     requests.requestMatchers(antMatcher("/booklet/file/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); //آپلود و دانلود جزوه
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
+
                 })
                 .httpBasic(Customizer.withDefaults());
         return http.build();
