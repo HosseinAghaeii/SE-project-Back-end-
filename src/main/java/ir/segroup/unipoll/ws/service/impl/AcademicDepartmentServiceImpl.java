@@ -31,6 +31,12 @@ public class AcademicDepartmentServiceImpl implements AcademicDepartmentService 
     }
 
     @Override
+    public ResponseEntity<BaseApiResponse> getADepartment(String publicId) {
+        AcademicDepartmentEntity existedDepartment = util.find(publicId);
+        return util.createResponse(util.convert(existedDepartment), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<BaseApiResponse> getManagerAndAssistant(String publicId) {
         AcademicDepartmentEntity existedDepartment = util.find(publicId);
         return util.createResponse(util.managerAndAssistantConvert(existedDepartment), HttpStatus.OK);

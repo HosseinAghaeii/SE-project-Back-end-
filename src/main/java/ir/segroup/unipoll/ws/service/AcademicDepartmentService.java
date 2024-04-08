@@ -11,4 +11,6 @@ public interface AcademicDepartmentService {
     ResponseEntity<BaseApiResponse> getCourses(String publicId);
 
     ResponseEntity<BaseApiResponse> getAllDepartments();
+
+    ResponseEntity<BaseApiResponse> getADepartment(String publicId);
 }
