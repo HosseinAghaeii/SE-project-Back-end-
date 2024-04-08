@@ -58,6 +58,8 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/booklet/**")).permitAll(); //لیست جزوه های برتر
                     requests.requestMatchers(antMatcher("/booklet/file/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); //آپلود و دانلود جزوه
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
+                    requests.requestMatchers(antMatcher("/instructor/**")).permitAll();
+                    requests.requestMatchers(antMatcher("/instructor-course/**")).permitAll();
 
                 })
                 .httpBasic(Customizer.withDefaults());

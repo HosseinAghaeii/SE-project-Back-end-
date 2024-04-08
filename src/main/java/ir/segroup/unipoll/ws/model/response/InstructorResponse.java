@@ -19,6 +19,8 @@ public class InstructorResponse extends UserResponse{
 
     private String websiteLink;
 
+    private String profilePhoto;
+
     public InstructorResponse(String username,
                               String firstname,
                               String lastname,
@@ -41,12 +43,15 @@ public class InstructorResponse extends UserResponse{
                               String academicRank,
                               String phoneNumber,
                               String email,
-                              String websiteLink) {
+                              String websiteLink,
+                              String profilePhoto) {
         super(firstname, lastname);
         this.phd = phd;
         this.academicRank = academicRank;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.websiteLink = websiteLink;
+        this.profilePhoto = profilePhoto;
     }
+
 }
