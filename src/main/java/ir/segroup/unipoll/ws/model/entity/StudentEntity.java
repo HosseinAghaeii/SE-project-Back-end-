@@ -18,8 +18,4 @@ public class StudentEntity  extends  UserEntity{
     @OneToMany(mappedBy = "studentEntity",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<RateEntity> rateEntities; // the list of all rate of student
 
-    public StudentEntity(String firstname, String lastname, String username, String encryptedPassword, String role, String major) {
-        super(firstname, lastname, username, encryptedPassword, role);
-        this.major = major;
-    }
 }
