@@ -14,7 +14,7 @@ public class InstructorController {
         this.instructorService = instructorService;
     }
 
-    @GetMapping("/filter/{filteredName}")
+    @GetMapping("/filter")
     public ResponseEntity<BaseApiResponse> filterInstructor(@RequestParam(value = "searchQuery") String filteredName) {
         return instructorService.findInstructor(filteredName);
     }

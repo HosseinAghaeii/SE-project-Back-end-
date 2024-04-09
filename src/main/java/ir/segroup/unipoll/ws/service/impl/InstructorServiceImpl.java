@@ -40,7 +40,7 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public ResponseEntity<BaseApiResponse> findInstructor(String filteredName) {
         Specification<InstructorEntity> filters = Specification.where(StringUtils.isBlank(filteredName) ? null : fromInstructorFirstname(filteredName)
-                .and(fromInstructorLastname(filteredName)));
+                .or(fromInstructorLastname(filteredName)));
         List<InstructorResponse> responses = instructorRepository.findAll(filters)
                 .stream()
                 .map(instructorUtil::convert)
