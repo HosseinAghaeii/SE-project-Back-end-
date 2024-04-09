@@ -21,4 +21,9 @@ public class InstructorCourseController {
     public ResponseEntity<BaseApiResponse> filterInstructorCourse(@RequestParam(value = "searchQuery") String filteredName) {
         return instructorCourseService.findInstructorCourse(filteredName);
     }
+
+    @GetMapping("/top-ten")
+    public ResponseEntity<BaseApiResponse> getTenTopInstructorCourses() {
+        return instructorCourseService.getTenTopInstructorCourses();
+    }
 }
