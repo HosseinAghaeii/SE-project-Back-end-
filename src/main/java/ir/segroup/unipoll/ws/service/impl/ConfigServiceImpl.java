@@ -54,7 +54,7 @@ public class ConfigServiceImpl  implements ConfigService {
         initColleges(file);
         initAcademicDept(file);
         initRelations(file);
-        return util.createResponse(new ArrayList<>(), HttpStatus.OK);
+        return util.createResponse(new ArrayList<>(), HttpStatus.CREATED);
     }
 
     private void initUsers(MultipartFile file){

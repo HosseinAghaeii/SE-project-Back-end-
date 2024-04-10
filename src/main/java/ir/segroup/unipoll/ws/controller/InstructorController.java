@@ -1,5 +1,6 @@
 package ir.segroup.unipoll.ws.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.ws.service.InstructorService;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/instructor")
+@Tag(name = "Instructor controller")
 public class InstructorController {
     private final InstructorService instructorService;
 
