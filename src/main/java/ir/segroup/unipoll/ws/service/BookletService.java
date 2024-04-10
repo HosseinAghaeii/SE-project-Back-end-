@@ -9,4 +9,5 @@ public interface BookletService  {
     ResponseEntity<byte[]> downloadBooklet(String publicId);
     ResponseEntity<BaseApiResponse> uploadBooklet(MultipartFile booklet, BookletRequest bookletRequest);
     ResponseEntity<BaseApiResponse> getTenTopBooklets(String token);
+    ResponseEntity<BaseApiResponse> likeABooklet(String token,String bookletPublicId);
 }

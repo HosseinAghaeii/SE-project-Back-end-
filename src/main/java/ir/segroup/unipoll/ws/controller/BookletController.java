@@ -11,6 +11,7 @@ import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.authenticator.SavedRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -75,11 +76,32 @@ public class BookletController {
         return bookletService.uploadBooklet(booklet, bookletRequest);
     }
 
+
     @GetMapping
+    @Operation(summary = "Get top ten booklet")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return a top ten booklet",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
     public ResponseEntity<BaseApiResponse> getTenTopBooklets(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         return bookletService.getTenTopBooklets(token);
     }
+
+    @PostMapping("/like/{bookletPublicId}")
+    public ResponseEntity<BaseApiResponse> likeABooklet(HttpServletRequest request, @PathVariable String bookletPublicId){
+        String token = request.getHeader("Authorization");
+        return bookletService.likeABooklet(token,bookletPublicId);
+    }
+
 
 
 

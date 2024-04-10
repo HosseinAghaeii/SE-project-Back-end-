@@ -21,7 +21,8 @@ public enum ExceptionMessages {
     NO_RECORD_FOUND("Record is not found"),
     FILE_EXCEPTION("Exception is related to file"),
     EMPTY_FILE("File is empty"),
-    COULD_NOT_CREAT_DIRECTORY("Could not create the directory where the uploaded files will be stored")
+    COULD_NOT_CREAT_DIRECTORY("Could not create the directory where the uploaded files will be stored"),
+    DUPLICATED_LIKE("This user has already liked booklet"),
     ;
 
     private final String message;
