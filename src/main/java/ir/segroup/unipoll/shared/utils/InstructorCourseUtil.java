@@ -5,10 +5,15 @@ import ir.segroup.unipoll.ws.model.entity.RateEntity;
 import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.List;
 
+import static org.apache.commons.math3.util.Precision.round;
+
 @Component
-public class InstructorCourseUtil extends Util{
+public class InstructorCourseUtil extends Util {
 
     public InstructorCourseResponse convert(InstructorCourseEntity instructorCourseEntity) {
         return InstructorCourseResponse.builder()
@@ -22,9 +27,10 @@ public class InstructorCourseUtil extends Util{
     }
 
     public double calculateRate(List<RateEntity> rateEntityList) {
-        return rateEntityList.stream()
+        double d = rateEntityList.stream()
                 .mapToDouble(RateEntity::getNumber)
                 .average()
                 .orElse(0.0);
+        return round(d,1);
     }
 }

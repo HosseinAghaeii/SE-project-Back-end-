@@ -7,12 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
-import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,12 +72,53 @@ public class BookletController {
         return bookletService.uploadBooklet(booklet, bookletRequest);
     }
 
+
     @GetMapping
+    @Operation(summary = "Get top ten booklet")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return a top ten booklet",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
     public ResponseEntity<BaseApiResponse> getTenTopBooklets(HttpServletRequest request) {
-        String token = request.getHeader("Athorization");
+        String token = request.getHeader("Authorization");
         return bookletService.getTenTopBooklets(token);
     }
 
 
-
+    @PostMapping("/like/{bookletPublicId}")
+    @Operation(summary = "Like a booklet")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "successfully like a booklet",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "User has already liked booklet.",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student,instructor and admin",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> likeABooklet(HttpServletRequest request, @PathVariable String bookletPublicId){
+        String token = request.getHeader("Authorization");
+        return bookletService.likeABooklet(token,bookletPublicId);
+    }
 }

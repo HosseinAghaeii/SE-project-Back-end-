@@ -54,7 +54,7 @@ public class ConfigServiceImpl  implements ConfigService {
         initColleges(file);
         initAcademicDept(file);
         initRelations(file);
-        return util.createResponse(new ArrayList<>(), HttpStatus.OK);
+        return util.createResponse(new ArrayList<>(), HttpStatus.CREATED);
     }
 
     private void initUsers(MultipartFile file){
@@ -92,6 +92,9 @@ public class ConfigServiceImpl  implements ConfigService {
         List<String> newCourseNames = new ArrayList<>(newCourses.stream().map(CourseEntity::getName).toList());
 
         List<CourseEntity> existedCourse = courseRepository.findAll();
+        if (existedCourse == null){
+
+        }
         List<String> existedCourseName = existedCourse.stream().map(CourseEntity::getName).toList();
 
         newCourseNames.removeAll(existedCourseName.stream().filter(newCourseNames::contains).toList());

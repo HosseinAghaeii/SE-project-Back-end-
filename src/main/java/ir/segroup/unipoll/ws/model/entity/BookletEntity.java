@@ -37,8 +37,9 @@ public class BookletEntity implements Serializable {
     )
     private List<UserEntity> likes;
 
-    @ManyToMany(mappedBy = "uploadedBooklets",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<UserEntity> uploaderUsers;
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "uploader_id")
+    private UserEntity uploaderUser;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ic_id")
