@@ -5,4 +5,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface InstructorCourseService {
     ResponseEntity<BaseApiResponse> findInstructorCourse(String filteredName);
+
+    ResponseEntity<BaseApiResponse> getTenTopInstructorCourses();
 }

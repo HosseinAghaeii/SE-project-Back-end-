@@ -3,10 +3,7 @@ package ir.segroup.unipoll.ws.controller;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.ws.service.InstructorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/instructor")
@@ -17,10 +14,19 @@ public class InstructorController {
         this.instructorService = instructorService;
     }
 
-    @GetMapping("/{filteredName}")
-    public ResponseEntity<BaseApiResponse> filterInstructor(@RequestParam String filteredName) {
+    @GetMapping("/filter")
+    public ResponseEntity<BaseApiResponse> filterInstructor(@RequestParam(value = "searchQuery") String filteredName) {
         return instructorService.findInstructor(filteredName);
     }
 
+    @GetMapping("/{publicId}")
+    public ResponseEntity<BaseApiResponse> getInstructor(@PathVariable String publicId) {
+        return instructorService.getInstructor(publicId);
+    }
+
+    @GetMapping("/{publicId}/courses")
+    public ResponseEntity<BaseApiResponse> getInstructorCourses(@PathVariable String publicId) {
+        return instructorService.getInstructorCourses(publicId);
+    }
 
 }

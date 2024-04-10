@@ -13,6 +13,8 @@ public class InstructorUtil extends Util{
                 instructor.getAcademicRank(),
                 instructor.getPhoneNumber(),
                 instructor.getEmail(),
-                instructor.getWebsiteLink());
+                instructor.getWebsiteLink(),
+                instructor.getProfilePhoto());
     }
+
 }

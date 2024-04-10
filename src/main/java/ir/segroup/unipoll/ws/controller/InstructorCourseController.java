@@ -17,8 +17,13 @@ public class InstructorCourseController {
         this.instructorCourseService = instructorCourseService;
     }
 
-    @GetMapping("/{filteredName}")
-    public ResponseEntity<BaseApiResponse> filterInstructorCourse(@RequestParam String filteredName) {
+    @GetMapping("/filter")
+    public ResponseEntity<BaseApiResponse> filterInstructorCourse(@RequestParam(value = "searchQuery") String filteredName) {
         return instructorCourseService.findInstructorCourse(filteredName);
+    }
+
+    @GetMapping("/top-ten")
+    public ResponseEntity<BaseApiResponse> getTenTopInstructorCourses() {
+        return instructorCourseService.getTenTopInstructorCourses();
     }
 }

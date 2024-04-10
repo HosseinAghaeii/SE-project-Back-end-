@@ -4,6 +4,7 @@ import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
+import ir.segroup.unipoll.ws.model.response.BookletResponse;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,5 +51,8 @@ public class BookletUtil extends Util{
                 .instructorCourseEntity(instructorCourseRepository.findByPublicId(bookletRequest.getInstCoursePublicId())
                         .orElseThrow(()-> new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.BAD_REQUEST)))
                 .build();
+    }
+    public BookletResponse convert(BookletEntity bookletEntity, String username){
+        return null;
     }
 }

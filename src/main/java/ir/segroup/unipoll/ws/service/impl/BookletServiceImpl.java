@@ -5,8 +5,10 @@ import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.shared.utils.BookletUtil;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
+import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
+import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
 import org.slf4j.Logger;
@@ -85,12 +87,13 @@ public class BookletServiceImpl implements BookletService {
                 .limit(10)
                 .map(Map.Entry::getKey)
                 .toList();
-        return bookletUtil.createResponse(tenTopPublicIdList
-//                                          .stream()
-//                                          .map(bookletPublicId -> {
-//                                              BookletEntity bookletEntity = bookletRepository.findByPublicId(bookletPublicId).get();
-//                                          })
-                ,HttpStatus.OK);
+        List<BookletResponse> responses = tenTopPublicIdList.stream()
+                .map(publicId -> {
+                    Optional<BookletEntity> bookletEntity = bookletRepository.findByPublicId(publicId);
+                    return bookletUtil.convert(bookletEntity.get(), username);
+                })
+                .toList();
+        return bookletUtil.createResponse(responses, HttpStatus.OK);
     }
 
 
