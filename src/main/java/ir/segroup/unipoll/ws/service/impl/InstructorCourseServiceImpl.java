@@ -48,7 +48,7 @@ public class InstructorCourseServiceImpl implements InstructorCourseService {
                         instructorCourseUtil.calculateRate(course.getRateEntities())));
         List<String> tenTopPublicIdList = rateMap.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue())
+                .sorted((o1, o2) -> o2.getValue().compareTo(o1.getValue()))
                 .limit(10)
                 .map(Map.Entry::getKey)
                 .toList();

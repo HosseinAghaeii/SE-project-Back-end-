@@ -49,7 +49,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/doc/**")).permitAll();
                     requests.requestMatchers(antMatcher("/swagger-ui/**")).permitAll();
                     requests.requestMatchers(antMatcher("/v3/api-docs/**")).permitAll();
-                    requests.requestMatchers("/comment/**").permitAll();
+                    requests.requestMatchers(antMatcher("/comment/**")).permitAll();
                     requests.requestMatchers(antMatcher("/login")).permitAll();
                     requests.requestMatchers(antMatcher("/course")).permitAll();
                     requests.requestMatchers(antMatcher("/college")).permitAll();

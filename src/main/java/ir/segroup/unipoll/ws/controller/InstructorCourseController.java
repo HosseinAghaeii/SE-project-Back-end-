@@ -22,7 +22,7 @@ public class InstructorCourseController {
         return instructorCourseService.findInstructorCourse(filteredName);
     }
 
-    @GetMapping("/top-ten")
+    @GetMapping()
     public ResponseEntity<BaseApiResponse> getTenTopInstructorCourses() {
         return instructorCourseService.getTenTopInstructorCourses();
     }
