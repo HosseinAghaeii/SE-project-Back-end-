@@ -3,9 +3,12 @@ package ir.segroup.unipoll.shared.utils;
 import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
+import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
+import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
+import ir.segroup.unipoll.ws.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +23,20 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Component
-public class BookletUtil extends Util{
+public class BookletUtil extends Util {
 
     private final Path fileStorageLocation;
+    private final BookletRepository bookletRepository;
 
     private final InstructorCourseRepository instructorCourseRepository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
     @Autowired
-    public BookletUtil(Environment env, InstructorCourseRepository instructorCourseRepository) {
+    public BookletUtil(Environment env, BookletRepository bookletRepository,  InstructorCourseRepository instructorCourseRepository) {
         this.fileStorageLocation = Paths.get(env.getProperty("app.file.upload-dir", "./uploads/files"))
                 .toAbsolutePath().normalize();
+        this.bookletRepository = bookletRepository;
+
         this.instructorCourseRepository = instructorCourseRepository;
 
         try {
@@ -39,6 +46,7 @@ public class BookletUtil extends Util{
             throw new SystemServiceException(ExceptionMessages.COULD_NOT_CREAT_DIRECTORY.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
+
     public BookletEntity convert(MultipartFile booklet, BookletRequest bookletRequest) {
         String filePath = fileStorageLocation + booklet.getOriginalFilename();
         if (booklet.isEmpty())
@@ -49,10 +57,40 @@ public class BookletUtil extends Util{
                 .term(bookletRequest.getTerm())
                 .text(bookletRequest.getText())
                 .instructorCourseEntity(instructorCourseRepository.findByPublicId(bookletRequest.getInstCoursePublicId())
-                        .orElseThrow(()-> new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.BAD_REQUEST)))
+                        .orElseThrow(() -> new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.BAD_REQUEST)))
                 .build();
     }
-    public BookletResponse convert(BookletEntity bookletEntity, String username){
-        return null;
+
+    public BookletResponse convert(String publicId, String username) {
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(publicId).get();
+        BookletResponse response = BookletResponse.builder()
+                .publicId(bookletEntity.getPublicId())
+                .courseName(bookletEntity.getInstructorCourseEntity().getCourseEntity().getName())
+                .instructorFirstname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getFirstname())
+                .instructorLastname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getLastname())
+                .uploaderFirstname(bookletEntity.getUploaderUser().getFirstname())
+                .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
+                .term(bookletEntity.getTerm())
+                .likeNumber(bookletEntity.getLikes().size())
+                .build();
+        if (username == null) {
+            response.setIsLiked(null);
+            response.setIsSaved(null);
+        } else {
+            response.setIsLiked(false);
+            response.setIsSaved(false);
+            bookletEntity.getLikes().forEach(user -> {
+                if (user.getUsername().equals(username)) {
+                    response.setIsLiked(true);
+                }
+            });
+            bookletEntity.getFavoritedUsers().forEach(user ->{
+                if (user.getUsername().equals(username)){
+                    response.setIsSaved(true);
+                }
+            });
+        }
+        return response;
+
     }
 }

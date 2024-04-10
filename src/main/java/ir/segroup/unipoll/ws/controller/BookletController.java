@@ -77,7 +77,7 @@ public class BookletController {
 
     @GetMapping
     public ResponseEntity<BaseApiResponse> getTenTopBooklets(HttpServletRequest request) {
-        String token = request.getHeader("Athorization");
+        String token = request.getHeader("Authorization");
         return bookletService.getTenTopBooklets(token);
     }
 
