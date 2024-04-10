@@ -23,7 +23,7 @@ public class UserUtil extends Util{
         UserResponse result;
         switch (userEntity.getRole()) {
             case ADMIN:
-                result = new UserResponse(userEntity.getUsername(), userEntity.getFirstname(), userEntity.getLastname(), userEntity.getRole());
+                result = new UserResponse(userEntity.getFirstname(),userEntity.getLastname(),userEntity.getPublicId(),userEntity.getUsername(),userEntity.getRole());
             break;
             case STUDENT: {
                 StudentEntity studentEntity = (StudentEntity) userEntity;
@@ -31,7 +31,8 @@ public class UserUtil extends Util{
                         studentEntity.getFirstname(),
                         studentEntity.getLastname(),
                         studentEntity.getRole(),
-                        studentEntity.getMajor());
+                        studentEntity.getMajor(),
+                        studentEntity.getPublicId());
             }
             break;
             case INSTRUCTOR:{
@@ -44,7 +45,8 @@ public class UserUtil extends Util{
                         insEntity.getAcademicRank(),
                         insEntity.getPhoneNumber(),
                         insEntity.getEmail(),
-                        insEntity.getWebsiteLink());
+                        insEntity.getWebsiteLink(),
+                        insEntity.getPublicId());
             }
             break;
             default: result = null;

@@ -9,12 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserResponse {
-    private String username;
 
     private String firstname;
-
     private String lastname;
-
+    private String publicId;
+    private String username;
     private String role;
 
     public UserResponse(String firstname, String lastname) {

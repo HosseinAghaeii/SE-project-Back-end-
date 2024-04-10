@@ -10,8 +10,8 @@ import lombok.Setter;
 public class StudentResponse extends UserResponse {
     private String major;
 
-    public StudentResponse(String username, String firstname, String lastname, String role, String major) {
-        super(username, firstname, lastname, role);
+    public StudentResponse(String username, String firstname, String lastname, String role, String major,String publicId) {
+        super(firstname,lastname,publicId,username,role);
         this.major = major;
     }
 }
