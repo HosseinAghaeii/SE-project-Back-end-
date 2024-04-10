@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.ws.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,30 @@ public class UserController {
     })
     public ResponseEntity<BaseApiResponse> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/one")
+    @Operation(summary = "Getting all users such as admin , student or teacher from database")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "One users successfully returned",
+                    content = {@Content(mediaType = "application/json"),@Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "failed to get user detail",
+                    content = {@Content(mediaType = "application/json"),@Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE)",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> getFullName(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        return userService.getOneUser(token);
     }
 
 }

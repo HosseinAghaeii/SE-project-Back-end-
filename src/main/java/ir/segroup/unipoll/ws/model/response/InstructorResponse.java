@@ -29,8 +29,9 @@ public class InstructorResponse extends UserResponse{
                               String academicRank,
                               String phoneNumber,
                               String email,
-                              String websiteLink) {
-        super(username, firstname, lastname, role);
+                              String websiteLink,
+                              String publicId) {
+        super(firstname,lastname,publicId,username,role);
         this.phd = phd;
         this.academicRank = academicRank;
         this.phoneNumber = phoneNumber;

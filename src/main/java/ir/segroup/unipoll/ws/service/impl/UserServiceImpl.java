@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserUtil util;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public UserServiceImpl(UserRepository userRepository, UserUtil convertor) {
         this.userRepository = userRepository;
@@ -34,5 +35,17 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseApiResponse> getAllUsers() {
         List<UserResponse> result = userRepository.findAll().stream().map(util::convert).toList();
         return util.createResponse(result,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> getOneUser(String token) {
+
+        String username = util.getUsernameFromToken(token);
+        UserResponse response = userRepository.findByUsername(username).map(util::convert)
+                .orElseThrow(() -> {
+                    logger.log(Level.OFF, "Failed to get user details");
+                    return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+                });
+        return util.createResponse(response,HttpStatus.OK);
     }
 }
