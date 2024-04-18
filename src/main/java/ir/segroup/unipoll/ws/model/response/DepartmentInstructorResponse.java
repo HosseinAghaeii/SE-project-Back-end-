@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class DepartmentInstructorResponse {
-    private String username;
+    private String publicId;
     private String firstname;
     private String lastname;
     private String profilePhoto;

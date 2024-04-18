@@ -27,7 +27,7 @@ public class UserUtil extends Util{
             break;
             case STUDENT: {
                 StudentEntity studentEntity = (StudentEntity) userEntity;
-                result = new StudentResponse(studentEntity.getUsername(),
+                result = new StudentResponse(
                         studentEntity.getFirstname(),
                         studentEntity.getLastname(),
                         studentEntity.getRole(),
@@ -37,7 +37,7 @@ public class UserUtil extends Util{
             break;
             case INSTRUCTOR:{
                 InstructorEntity insEntity = (InstructorEntity) userEntity;
-                result = new InstructorResponse(insEntity.getUsername(),
+                result = new InstructorResponse(insEntity.getPublicId(),
                         insEntity.getFirstname(),
                         insEntity.getLastname(),
                         insEntity.getRole(),

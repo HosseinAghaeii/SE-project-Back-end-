@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class InstructorUtil extends Util{
     public InstructorResponse convert(InstructorEntity instructor) {
-        return new InstructorResponse(instructor.getFirstname(),
+        return new InstructorResponse(instructor.getPublicId(),
+                instructor.getFirstname(),
                 instructor.getLastname(),
+                instructor.getRole(),
                 instructor.getPhd(),
                 instructor.getAcademicRank(),
                 instructor.getPhoneNumber(),
