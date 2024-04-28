@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @Table(name = "comments")
-public class CommentEntity implements Serializable {
+public class ContactEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

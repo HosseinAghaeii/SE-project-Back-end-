@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommentRequest {
+public class ContactRequest {
 
     private String firstname;
 

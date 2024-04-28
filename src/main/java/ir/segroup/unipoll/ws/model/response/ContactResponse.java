@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommentResponse {
+public class ContactResponse {
 
     private String publicId;
 
