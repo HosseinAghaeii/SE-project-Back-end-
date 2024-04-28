@@ -42,7 +42,7 @@ public class AcademicDepartmentUtil extends Util {
         List<DepartmentManagerAndAssistantResponse> result = new ArrayList<>();
         result.add(DepartmentManagerAndAssistantResponse.builder()
                 .type("Manager")
-                .username(department.getManager().getUsername())
+                .publicId(department.getManager().getPublicId())
                 .firstname(department.getManager().getFirstname())
                 .lastname(department.getManager().getLastname())
                 .profilePhoto(department.getManager().getProfilePhoto())
@@ -55,7 +55,7 @@ public class AcademicDepartmentUtil extends Util {
 
         result.add(DepartmentManagerAndAssistantResponse.builder()
                 .type("Assistant")
-                .username(department.getAssistant().getUsername())
+                .publicId(department.getAssistant().getPublicId())
                 .firstname(department.getAssistant().getFirstname())
                 .lastname(department.getAssistant().getLastname())
                 .profilePhoto(department.getAssistant().getProfilePhoto())
@@ -72,7 +72,7 @@ public class AcademicDepartmentUtil extends Util {
         List<DepartmentInstructorResponse> result = new ArrayList<>();
         department.getInstructorEntities()
                 .forEach(instructor -> result.add(DepartmentInstructorResponse.builder()
-                        .username(instructor.getUsername())
+                        .publicId(instructor.getPublicId())
                         .firstname(instructor.getFirstname())
                         .lastname(instructor.getLastname())
                         .profilePhoto(instructor.getProfilePhoto())

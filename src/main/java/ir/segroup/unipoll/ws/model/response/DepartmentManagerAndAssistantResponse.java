@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class DepartmentManagerAndAssistantResponse {
     private String type;
-    private String username;
+    private String publicId;
     private String firstname;
     private String lastname;
     private String profilePhoto;

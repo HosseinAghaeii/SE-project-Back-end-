@@ -16,8 +16,11 @@ public class UserResponse {
     private String username;
     private String role;
 
-    public UserResponse(String firstname, String lastname) {
+
+    public UserResponse(String firstname, String lastname, String publicId, String role) {
         this.firstname = firstname;
         this.lastname = lastname;
+        this.publicId = publicId;
+        this.role = role;
     }
 }
