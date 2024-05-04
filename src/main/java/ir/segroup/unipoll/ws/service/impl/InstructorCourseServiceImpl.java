@@ -1,8 +1,12 @@
 package ir.segroup.unipoll.ws.service.impl;
 
+import ir.segroup.unipoll.config.exception.SystemServiceException;
+import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
+import ir.segroup.unipoll.shared.utils.BookletUtil;
 import ir.segroup.unipoll.shared.utils.InstructorCourseUtil;
 import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
+import ir.segroup.unipoll.ws.model.response.BookletResponse;
 import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
 import ir.segroup.unipoll.ws.service.InstructorCourseService;
@@ -25,9 +29,12 @@ public class InstructorCourseServiceImpl implements InstructorCourseService {
 
     private final InstructorCourseUtil instructorCourseUtil;
 
-    public InstructorCourseServiceImpl(InstructorCourseRepository instructorCourseRepository, InstructorCourseUtil instructorCourseUtil) {
+    private final BookletUtil bookletUtil;
+
+    public InstructorCourseServiceImpl(InstructorCourseRepository instructorCourseRepository, InstructorCourseUtil instructorCourseUtil, BookletUtil bookletUtil) {
         this.instructorCourseRepository = instructorCourseRepository;
         this.instructorCourseUtil = instructorCourseUtil;
+        this.bookletUtil = bookletUtil;
     }
 
     @Override
@@ -60,4 +67,14 @@ public class InstructorCourseServiceImpl implements InstructorCourseService {
                 .toList();
         return instructorCourseUtil.createResponse(responses, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> getAInstructorCourse(String publicId) {
+        Optional<InstructorCourseEntity> instructorCourseEntity = instructorCourseRepository.findByPublicId(publicId);
+        if (instructorCourseEntity.isEmpty())
+            throw new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(),HttpStatus.NOT_FOUND);
+        InstructorCourseResponse instructorCourseResponse = instructorCourseUtil.convert(instructorCourseEntity.get());
+        return instructorCourseUtil.createResponse(instructorCourseResponse, HttpStatus.OK);
+    }
+
 }

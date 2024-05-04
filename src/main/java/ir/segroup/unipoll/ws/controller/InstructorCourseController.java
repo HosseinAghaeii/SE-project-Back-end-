@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.ws.service.InstructorCourseService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,4 +44,24 @@ public class InstructorCourseController {
     public ResponseEntity<BaseApiResponse> getTenTopInstructorCourses() {
         return instructorCourseService.getTenTopInstructorCourses();
     }
+
+    @GetMapping("/{publicId}")
+    @Operation(summary = "Get a desired course of instructor")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Could not find a course of instructor with this publicId",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return a desired course of instructor successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> getAInstructorCourse(@PathVariable String publicId) {
+        return instructorCourseService.getAInstructorCourse(publicId);
+    }
+
+
 }

@@ -21,6 +21,8 @@ public class InstructorCourseEntity implements Serializable {
 
     private String publicId;
 
+    private String lastUpdate;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private CourseEntity courseEntity;
