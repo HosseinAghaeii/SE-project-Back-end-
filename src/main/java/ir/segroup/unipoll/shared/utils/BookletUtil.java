@@ -93,4 +93,36 @@ public class BookletUtil extends Util {
         return response;
 
     }
+
+    public BookletResponse convert(BookletEntity bookletEntity, String username) {
+        BookletResponse response = BookletResponse.builder()
+                .publicId(bookletEntity.getPublicId())
+                .courseName(bookletEntity.getInstructorCourseEntity().getCourseEntity().getName())
+                .instructorFirstname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getFirstname())
+                .instructorLastname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getLastname())
+                .uploaderFirstname(bookletEntity.getUploaderUser().getFirstname())
+                .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
+                .term(bookletEntity.getTerm())
+                .likeNumber(bookletEntity.getLikes().size())
+                .build();
+        if (username == null) {
+            response.setIsLiked(null);
+            response.setIsSaved(null);
+        } else {
+            response.setIsLiked(false);
+            response.setIsSaved(false);
+            bookletEntity.getLikes().forEach(user -> {
+                if (user.getUsername().equals(username)) {
+                    response.setIsLiked(true);
+                }
+            });
+            bookletEntity.getFavoritedUsers().forEach(user ->{
+                if (user.getUsername().equals(username)){
+                    response.setIsSaved(true);
+                }
+            });
+        }
+        return response;
+    }
+
 }
