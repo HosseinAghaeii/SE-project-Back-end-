@@ -20,6 +20,7 @@ public class InstructorCourseEntity implements Serializable {
     private long id;
 
     private String publicId;
+    private String lastUpdate;
 
     private String lastUpdate;
 
@@ -31,6 +32,7 @@ public class InstructorCourseEntity implements Serializable {
     @JoinColumn(name = "instructor_id")
     private InstructorEntity instructorEntity;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
