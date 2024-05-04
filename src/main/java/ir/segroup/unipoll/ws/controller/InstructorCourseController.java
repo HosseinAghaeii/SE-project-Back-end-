@@ -21,7 +21,7 @@ public class InstructorCourseController {
         this.instructorCourseService = instructorCourseService;
     }
 
-    @GetMapping("/filter")
+        @GetMapping("/filter")
     public ResponseEntity<BaseApiResponse> filterInstructorCourse(@RequestParam(value = "searchQuery") String filteredName) {
         return instructorCourseService.findInstructorCourse(filteredName);
     }
@@ -45,23 +45,26 @@ public class InstructorCourseController {
         return instructorCourseService.getTenTopInstructorCourses();
     }
 
+
     @GetMapping("booklets/{publicId}")
-    @Operation(summary = "Get all booklets of a course of instructor")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Could not find a course of instructor with this publicId",
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            ),
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Return all booklets of a course of instructor successfully",
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            )
-    })
+      public ResponseEntity<BaseApiResponse> getAInstructorCourse(@PathVariable String publicId) {
+        return instructorCourseService.getAInstructorCourse(publicId);
+    }
+
+
+    
     public ResponseEntity<BaseApiResponse> getInstructorCourseBooklets(HttpServletRequest request, @PathVariable String publicId) {
         String token = request.getHeader("Authorization");
         return instructorCourseService.getInstructorCourseBooklets(token,publicId);
+
+
+    @PutMapping("/edit-description/{publicId}")            
+    public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId,
+                                                           @RequestBody String newDescription,
+                                                           HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        return instructorCourseService.editDescription(publicId,token,newDescription);
+
     }
 
 }

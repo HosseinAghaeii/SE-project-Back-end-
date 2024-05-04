@@ -23,6 +23,7 @@ public enum ExceptionMessages {
     EMPTY_FILE("File is empty"),
     COULD_NOT_CREAT_DIRECTORY("Could not create the directory where the uploaded files will be stored"),
     DUPLICATED_LIKE("This user has already liked booklet"),
+    FORBIDDEN_EDIT_IC_DESCRIPTION_REQUEST("Only the teacher of this course can edit its description"),
     ;
 
     private final String message;

@@ -27,16 +27,18 @@ public class ConfigServiceImpl  implements ConfigService {
     private final InstructorCourseRepository instructorCourseRepository;
     private final CollegeRepository collegeRepository;
     private final AcademicDepartmentRepository academicDepartmentRepository;
+    private final TermRepository termRepository;
     private final Util util;
     private final ExcelHandler excelHandler;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public ConfigServiceImpl(UserRepository userRepository, CourseRepository courseRepository, InstructorCourseRepository instructorCourseRepository, CollegeRepository collegeRepository, AcademicDepartmentRepository academicDepartmentRepository, Util util, ExcelHandler excelHandler) {
+    public ConfigServiceImpl(UserRepository userRepository, CourseRepository courseRepository, InstructorCourseRepository instructorCourseRepository, CollegeRepository collegeRepository, AcademicDepartmentRepository academicDepartmentRepository, TermRepository termRepository, Util util, ExcelHandler excelHandler) {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
         this.instructorCourseRepository = instructorCourseRepository;
         this.collegeRepository = collegeRepository;
         this.academicDepartmentRepository = academicDepartmentRepository;
+        this.termRepository = termRepository;
         this.util = util;
         this.excelHandler = excelHandler;
     }
@@ -54,6 +56,8 @@ public class ConfigServiceImpl  implements ConfigService {
         initColleges(file);
         initAcademicDept(file);
         initRelations(file);
+
+        initTerm(file);
         return util.createResponse(new ArrayList<>(), HttpStatus.CREATED);
     }
 
@@ -124,6 +128,29 @@ public class ConfigServiceImpl  implements ConfigService {
         newIC.forEach(iCEntity -> {
             if (newICId.contains(iCEntity.getId())){
                 instructorCourseRepository.save(iCEntity);
+            }
+        });
+    }
+
+    private void initTerm(MultipartFile file){
+        List<TermEntity> newTerms;
+        try {
+            newTerms = excelHandler.excelToTermEntity(file.getInputStream());
+        }catch (IOException e){
+            logger.log(Level.OFF,e.getMessage());
+            throw new SystemServiceException(ExceptionMessages.INPUT_STREAM_ERROR.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        newTerms.forEach(instructorCourseEntity -> instructorCourseEntity.setPublicId(UUID.randomUUID().toString())); // set publicId for new IC
+
+        List<Long> newTermIds = new ArrayList<>(newTerms.stream().map(TermEntity::getId).toList());
+
+        List<TermEntity> existedTerms = termRepository.findAll();
+        List<Long> existedTermIds = existedTerms.stream().map(TermEntity::getId).toList();
+
+        newTermIds.removeAll(existedTermIds.stream().filter(newTermIds::contains).toList());
+        newTerms.forEach(termEntity -> {
+            if (newTermIds.contains(termEntity.getId())){
+                termRepository.save(termEntity);
             }
         });
     }
