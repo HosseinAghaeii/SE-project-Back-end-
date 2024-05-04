@@ -39,13 +39,18 @@ public class CommentCUtil extends Util{
                 .build();
     }
 
-    public CommentCResponse convert(CommentCEntity entity){
+    public CommentCResponse convert(CommentCEntity entity,boolean unknown){
+
+        String writerName = unknown ? "unknown":entity.getUserEntity().getFirstname()+" "+entity.getUserEntity().getLastname();
+
+
         return CommentCResponse.builder()
-                .writerName(entity.getUserEntity().getFirstname()+" "+entity.getUserEntity().getLastname())
+                .writerName(writerName)
                 .text(entity.getText())
                 .createdDate(entity.getCreatedDate())
                 .publicId(entity.getPublicId())
                 .term(entity.getTermEntity().getName())
+                .writerType(entity.getUserEntity().getRole())
                 .build();
     }
 }

@@ -12,5 +12,6 @@ public class CommentCRequest {
     private String text;
     private String icPublicId;
     private String termPublicId;
+    private boolean unknown;
 
 }

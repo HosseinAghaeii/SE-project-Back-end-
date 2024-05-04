@@ -104,7 +104,7 @@ public class BookletUtil extends Util {
                 .instructorLastname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getLastname())
                 .uploaderFirstname(bookletEntity.getUploaderUser().getFirstname())
                 .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
-                .term(bookletEntity.getTerm())
+                .term(bookletEntity.getTermEntity().getName())
                 .likeNumber(bookletEntity.getLikes().size())
                 .build();
         if (username == null) {
