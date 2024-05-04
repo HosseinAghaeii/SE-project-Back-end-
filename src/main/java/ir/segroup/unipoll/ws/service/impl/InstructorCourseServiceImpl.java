@@ -71,6 +71,19 @@ public class InstructorCourseServiceImpl implements InstructorCourseService {
     }
 
     @Override
+
+    public ResponseEntity<BaseApiResponse> getInstructorCourseBooklets(String token,String publicId) {
+        String username = instructorCourseUtil.getUsernameFromToken(token);
+        Optional<InstructorCourseEntity> instructorCourseEntity = instructorCourseRepository.findByPublicId(publicId);
+        if (instructorCourseEntity.isEmpty())
+            throw new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(),HttpStatus.NOT_FOUND);
+
+        List<BookletResponse> bookletResponse = instructorCourseEntity.get().getBookletEntities().stream()
+                .map(be -> bookletUtil.convert(be, username))
+                .toList();
+        return bookletUtil.createResponse(bookletResponse,HttpStatus.OK);
+    }
+@Override
     public ResponseEntity<BaseApiResponse> getAInstructorCourse(String publicId) {
         Optional<InstructorCourseEntity> instructorCourseEntity = instructorCourseRepository.findByPublicId(publicId);
         if (instructorCourseEntity.isEmpty())
@@ -104,5 +117,6 @@ public class InstructorCourseServiceImpl implements InstructorCourseService {
 
         return instructorCourseUtil.createResponse(response,HttpStatus.OK);
     }
+
 
 }

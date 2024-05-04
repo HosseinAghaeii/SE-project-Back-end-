@@ -46,61 +46,25 @@ public class InstructorCourseController {
     }
 
 
-    @GetMapping("/{publicId}")
-    @Operation(summary = "Get a desired course of instructor")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Could not find a course of instructor with this publicId",
-              content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            ),
-      @ApiResponse(
-                    responseCode = "200",
-        description = "Return a desired course of instructor successfully",
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            )
-    })
+    @GetMapping("booklets/{publicId}")
       public ResponseEntity<BaseApiResponse> getAInstructorCourse(@PathVariable String publicId) {
         return instructorCourseService.getAInstructorCourse(publicId);
     }
 
 
-    @PutMapping("/edit-description/{publicId}")
-    @Operation(summary = "Update ic description")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Only teachers can call this api.If another user try to call this methode app send 401 code",
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "When the teacher or administrator who does not own this lesson tries to change the description",
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "when ic public id not found",
+    
+    public ResponseEntity<BaseApiResponse> getInstructorCourseBooklets(HttpServletRequest request, @PathVariable String publicId) {
+        String token = request.getHeader("Authorization");
+        return instructorCourseService.getInstructorCourseBooklets(token,publicId);
 
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            ),
-            @ApiResponse(
-                    responseCode = "200",
 
-                    description =  description = "successfully edit description",
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            )           
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "System Default Exception (SDE), or when database IO exception occurred",
-                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            )
-    })
+    @PutMapping("/edit-description/{publicId}")            
     public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId,
                                                            @RequestBody String newDescription,
                                                            HttpServletRequest request){
         String token = request.getHeader("Authorization");
         return instructorCourseService.editDescription(publicId,token,newDescription);
+
     }
 
 }
