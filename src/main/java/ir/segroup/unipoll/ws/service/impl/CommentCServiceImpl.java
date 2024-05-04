@@ -34,7 +34,7 @@ public class CommentCServiceImpl implements CommentCService {
         }catch (Exception e){
             throw new SystemServiceException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        CommentCResponse response = util.convert(savedComment);
+        CommentCResponse response = util.convert(savedComment, request.isUnknown());
         return util.createResponse(response,HttpStatus.OK);
     }
 }

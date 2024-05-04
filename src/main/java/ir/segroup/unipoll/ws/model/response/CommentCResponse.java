@@ -12,5 +12,6 @@ public class CommentCResponse {
     private String publicId;
     private String createdDate;
     private String writerName;
+    private String writerType;
     private String term;
 }

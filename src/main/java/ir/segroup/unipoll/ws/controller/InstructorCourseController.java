@@ -52,10 +52,11 @@ public class InstructorCourseController {
     }
 
 
-    
+    @GetMapping("/dfdfg")
     public ResponseEntity<BaseApiResponse> getInstructorCourseBooklets(HttpServletRequest request, @PathVariable String publicId) {
         String token = request.getHeader("Authorization");
-        return instructorCourseService.getInstructorCourseBooklets(token,publicId);
+        return instructorCourseService.getInstructorCourseBooklets(token, publicId);
+    }
 
 
     @PutMapping("/edit-description/{publicId}")            
