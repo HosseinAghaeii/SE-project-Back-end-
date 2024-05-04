@@ -7,5 +7,11 @@ public interface InstructorCourseService {
     ResponseEntity<BaseApiResponse> findInstructorCourse(String filteredName);
 
     ResponseEntity<BaseApiResponse> getTenTopInstructorCourses();
+
+
+    ResponseEntity<BaseApiResponse> getAInstructorCourse(String publicId);
+
+
     ResponseEntity<BaseApiResponse> editDescription(String publicId,String token,String newDescription);
+
 }

@@ -46,6 +46,25 @@ public class InstructorCourseController {
     }
 
 
+    @GetMapping("/{publicId}")
+    @Operation(summary = "Get a desired course of instructor")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Could not find a course of instructor with this publicId",
+              content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+      @ApiResponse(
+                    responseCode = "200",
+        description = "Return a desired course of instructor successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+      public ResponseEntity<BaseApiResponse> getAInstructorCourse(@PathVariable String publicId) {
+        return instructorCourseService.getAInstructorCourse(publicId);
+    }
+
+
     @PutMapping("/edit-description/{publicId}")
     @Operation(summary = "Update ic description")
     @ApiResponses(value = {
@@ -62,13 +81,15 @@ public class InstructorCourseController {
             @ApiResponse(
                     responseCode = "404",
                     description = "when ic public id not found",
+
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(
                     responseCode = "200",
-                    description = "successfully edit description",
+
+                    description =  description = "successfully edit description",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
-            ),
+            )           
             @ApiResponse(
                     responseCode = "500",
                     description = "System Default Exception (SDE), or when database IO exception occurred",
@@ -81,4 +102,5 @@ public class InstructorCourseController {
         String token = request.getHeader("Authorization");
         return instructorCourseService.editDescription(publicId,token,newDescription);
     }
+
 }
