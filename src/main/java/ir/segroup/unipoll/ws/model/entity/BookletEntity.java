@@ -24,7 +24,9 @@ public class BookletEntity implements Serializable {
 
     private String text;
 
-    private String term; // ##-#  year- 1 OR 2
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "term_id")
+    private TermEntity termEntity;
 
     @ManyToMany(mappedBy = "favoriteBooklets", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserEntity> favoritedUsers; // users who have selected this booklet as they favorite booklet

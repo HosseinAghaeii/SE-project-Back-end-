@@ -34,6 +34,7 @@ public class ExcelHandler {
     private static final String ACADEMIC_DEPT = "academicDepartment";
     private static final String DEPT_COURSE = "dept_course";
     private static final String DEPT_INSTRUCTOR = "dept_instructor";
+    private static final String TERM = "terms";
 
 
     private static final String NAME = "name";
@@ -717,6 +718,59 @@ public class ExcelHandler {
             }
             workbook.close();
 
+        } catch (IOException e) {
+            throw new SystemServiceException(ExceptionMessages.COULD_NOT_WORK_WITH_EXCEL.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public List<TermEntity> excelToTermEntity(InputStream inputStream) {
+        List<Long> ids = new ArrayList<>();
+        try {
+            Workbook workbook = new XSSFWorkbook(inputStream);
+
+            Sheet sheet = workbook.getSheet(TERM);
+            Iterator<Row> rows = sheet.iterator();
+
+            List<TermEntity> termEntities = new ArrayList<>();
+
+            int rowNumber = 0;
+            while (rows.hasNext()) {
+                Row currentRow = rows.next();
+
+                //skip header
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+
+                Iterator<Cell> cellsInRow = currentRow.iterator();
+
+                TermEntity termEntity = new TermEntity();
+
+                int cellIdx = 0;
+                while (cellsInRow.hasNext()) {
+                    Cell currentCell = cellsInRow.next();
+
+                    switch (cellIdx) {
+                        case 0: {
+                            validator.checkId(currentCell, ids, TERM);
+                            termEntity.setId((long) currentCell.getNumericCellValue());
+                            ids.add((long) currentCell.getNumericCellValue());
+                        }
+                        break;
+                        case 1: {
+                            validator.checkStringFormat(currentCell, TERM, NAME);
+                            termEntity.setName(currentCell.getStringCellValue());
+                        }
+                        default:
+                            break;
+                    }
+                    cellIdx++;
+                }
+                termEntities.add(termEntity);
+            }
+            workbook.close();
+            return termEntities;
         } catch (IOException e) {
             throw new SystemServiceException(ExceptionMessages.COULD_NOT_WORK_WITH_EXCEL.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
