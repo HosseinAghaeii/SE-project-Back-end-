@@ -397,6 +397,11 @@ public class ExcelHandler {
                             });
                         }
                         break;
+                        case 4: {
+                            validator.checkStringFormat(currentCell,IC,"last_update");
+                            instructorCourseEntity.setLastUpdate(currentCell.getStringCellValue());
+                        }
+                        break;
                         default:
                             break;
                     }
