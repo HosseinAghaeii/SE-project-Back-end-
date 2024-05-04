@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookletRequest {
     private String text;
-    private String term;
+    private String termPublicId;
     private String instCoursePublicId;
 }

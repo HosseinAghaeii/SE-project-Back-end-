@@ -51,7 +51,7 @@ public class InstructorCourseController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "401",
-                    description = "Only teachers and admins can call this api.If another user try to call this methode app send 401 code",
+                    description = "Only teachers can call this api.If another user try to call this methode app send 401 code",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(

@@ -13,8 +13,8 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "course_comments")
-@EntityListeners(AuditingEntityListener.class)
 public class CommentCEntity implements Serializable {
 
     @Id
@@ -23,12 +23,14 @@ public class CommentCEntity implements Serializable {
 
     private String publicId;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String text;
 
-    private String term; // ##-#   year-1 OR 2
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "term_id")
+    private TermEntity termEntity;
 
-    @CreatedDate
-    private Date created;
+    private String createdDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
