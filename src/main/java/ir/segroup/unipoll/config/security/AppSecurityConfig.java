@@ -58,9 +58,12 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/booklet/file/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); //آپلود و دانلود جزوه
                     requests.requestMatchers(antMatcher("/booklet/like/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // لایک جزوه
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
-                    requests.requestMatchers(antMatcher("/instructor/**")).permitAll();
-                    requests.requestMatchers(antMatcher("/instructor-course/**")).permitAll();
+                    requests.requestMatchers(antMatcher("/instructor/**")).permitAll();                
                     requests.requestMatchers(antMatcher("/rate/**")).hasAnyRole(ADMIN,STUDENT);
+                    requests.requestMatchers(antMatcher("/instructor-course")).permitAll(); // لیست درس استاد های برتر
+                    requests.requestMatchers(antMatcher("/instructor-course/filter")).permitAll(); // سرچ درس استاد
+                    requests.requestMatchers(antMatcher("/instructor-course/edit-description/**")).hasAnyRole(INSTRUCTOR); // ویرایش درس استاد
+                    requests.requestMatchers(antMatcher("/comment-c")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // ساخت کامنت درس استاد
 
                 })
                 .httpBasic(Customizer.withDefaults());

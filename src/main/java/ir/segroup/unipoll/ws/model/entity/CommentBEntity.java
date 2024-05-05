@@ -17,7 +17,6 @@ import java.util.Date;
 @Setter
 @Getter
 @Table(name = "booklet_comments")
-@EntityListeners(AuditingEntityListener.class)
 public class CommentBEntity implements Serializable {
 
     @Id
@@ -26,10 +25,10 @@ public class CommentBEntity implements Serializable {
 
     private String publicId;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String text;
 
-    @CreatedDate
-    private Date created;
+    private Date createdDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

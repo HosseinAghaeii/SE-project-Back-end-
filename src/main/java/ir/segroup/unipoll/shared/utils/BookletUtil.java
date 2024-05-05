@@ -3,12 +3,11 @@ package ir.segroup.unipoll.shared.utils;
 import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
-import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
-import ir.segroup.unipoll.ws.repository.UserRepository;
+import ir.segroup.unipoll.ws.repository.TermRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +26,17 @@ public class BookletUtil extends Util {
 
     private final Path fileStorageLocation;
     private final BookletRepository bookletRepository;
+    private final TermRepository termRepository;
 
     private final InstructorCourseRepository instructorCourseRepository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @Autowired
-    public BookletUtil(Environment env, BookletRepository bookletRepository,  InstructorCourseRepository instructorCourseRepository) {
+    public BookletUtil(Environment env, BookletRepository bookletRepository, TermRepository termRepository, InstructorCourseRepository instructorCourseRepository) {
         this.fileStorageLocation = Paths.get(env.getProperty("app.file.upload-dir", "./uploads/files"))
                 .toAbsolutePath().normalize();
         this.bookletRepository = bookletRepository;
+        this.termRepository = termRepository;
 
         this.instructorCourseRepository = instructorCourseRepository;
 
@@ -54,7 +55,8 @@ public class BookletUtil extends Util {
         return BookletEntity.builder()
                 .publicId(UUID.randomUUID().toString())
                 .filePath(filePath)
-                .term(bookletRequest.getTerm())
+                .termEntity(termRepository.findByPublicId(bookletRequest.getTermPublicId())
+                        .orElseThrow(() -> new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.BAD_REQUEST)))
                 .text(bookletRequest.getText())
                 .instructorCourseEntity(instructorCourseRepository.findByPublicId(bookletRequest.getInstCoursePublicId())
                         .orElseThrow(() -> new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.BAD_REQUEST)))
@@ -70,7 +72,7 @@ public class BookletUtil extends Util {
                 .instructorLastname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getLastname())
                 .uploaderFirstname(bookletEntity.getUploaderUser().getFirstname())
                 .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
-                .term(bookletEntity.getTerm())
+                .term(bookletEntity.getTermEntity().getName())
                 .likeNumber(bookletEntity.getLikes().size())
                 .build();
         if (username == null) {
@@ -93,4 +95,36 @@ public class BookletUtil extends Util {
         return response;
 
     }
+
+    public BookletResponse convert(BookletEntity bookletEntity, String username) {
+        BookletResponse response = BookletResponse.builder()
+                .publicId(bookletEntity.getPublicId())
+                .courseName(bookletEntity.getInstructorCourseEntity().getCourseEntity().getName())
+                .instructorFirstname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getFirstname())
+                .instructorLastname(bookletEntity.getInstructorCourseEntity().getInstructorEntity().getLastname())
+                .uploaderFirstname(bookletEntity.getUploaderUser().getFirstname())
+                .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
+                .term(bookletEntity.getTermEntity().getName())
+                .likeNumber(bookletEntity.getLikes().size())
+                .build();
+        if (username == null) {
+            response.setIsLiked(null);
+            response.setIsSaved(null);
+        } else {
+            response.setIsLiked(false);
+            response.setIsSaved(false);
+            bookletEntity.getLikes().forEach(user -> {
+                if (user.getUsername().equals(username)) {
+                    response.setIsLiked(true);
+                }
+            });
+            bookletEntity.getFavoritedUsers().forEach(user ->{
+                if (user.getUsername().equals(username)){
+                    response.setIsSaved(true);
+                }
+            });
+        }
+        return response;
+    }
+
 }

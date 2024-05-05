@@ -8,6 +8,8 @@ import lombok.*;
 @Getter
 @Builder
 public class InstructorCourseResponse {
+    private String publicId;
+    private String lastUpdate;
     private String courseName;
     private String instructorCourseFirstname;
     private String instructorCourseLastname;

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.ws.service.InstructorCourseService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class InstructorCourseController {
         this.instructorCourseService = instructorCourseService;
     }
 
-    @GetMapping("/filter")
+        @GetMapping("/filter")
     public ResponseEntity<BaseApiResponse> filterInstructorCourse(@RequestParam(value = "searchQuery") String filteredName) {
         return instructorCourseService.findInstructorCourse(filteredName);
     }
@@ -43,4 +44,28 @@ public class InstructorCourseController {
     public ResponseEntity<BaseApiResponse> getTenTopInstructorCourses() {
         return instructorCourseService.getTenTopInstructorCourses();
     }
+
+
+    @GetMapping("booklets/{publicId}")
+      public ResponseEntity<BaseApiResponse> getAInstructorCourse(@PathVariable String publicId) {
+        return instructorCourseService.getAInstructorCourse(publicId);
+    }
+
+
+    @GetMapping("/dfdfg")
+    public ResponseEntity<BaseApiResponse> getInstructorCourseBooklets(HttpServletRequest request, @PathVariable String publicId) {
+        String token = request.getHeader("Authorization");
+        return instructorCourseService.getInstructorCourseBooklets(token, publicId);
+    }
+
+
+    @PutMapping("/edit-description/{publicId}")            
+    public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId,
+                                                           @RequestBody String newDescription,
+                                                           HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        return instructorCourseService.editDescription(publicId,token,newDescription);
+
+    }
+
 }

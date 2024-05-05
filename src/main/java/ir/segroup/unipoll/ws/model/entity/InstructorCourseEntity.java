@@ -30,6 +30,7 @@ public class InstructorCourseEntity implements Serializable {
     @JoinColumn(name = "instructor_id")
     private InstructorEntity instructorEntity;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
