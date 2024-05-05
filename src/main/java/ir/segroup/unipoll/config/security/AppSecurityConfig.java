@@ -60,6 +60,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
                     requests.requestMatchers(antMatcher("/instructor/**")).permitAll();
                     requests.requestMatchers(antMatcher("/instructor-course/**")).permitAll();
+                    requests.requestMatchers(antMatcher("/rate/**")).hasAnyRole(ADMIN,STUDENT);
 
                 })
                 .httpBasic(Customizer.withDefaults());
