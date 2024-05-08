@@ -56,10 +56,15 @@ public class BookletServiceImpl implements BookletService {
     }
 
     @Override
-    public ResponseEntity<BaseApiResponse> uploadBooklet(MultipartFile booklet, BookletRequest bookletRequest) {
-        BookletEntity bookletEntity = bookletUtil.convert(booklet, bookletRequest);
+    public ResponseEntity<BaseApiResponse> uploadBooklet(MultipartFile booklet, BookletRequest bookletRequest, String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get user details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        BookletEntity bookletEntity = bookletUtil.convert(booklet, bookletRequest, userEntity);
         if (bookletEntity == null) {
-            throw new SystemServiceException(ExceptionMessages.EMPTY_FILE.getMessage(), HttpStatus.NOT_FOUND);
+            throw new SystemServiceException(ExceptionMessages.EMPTY_FILE.getMessage(), HttpStatus.NO_CONTENT);
         }
         try {
             BookletEntity savedBookletEntity = bookletRepository.save(bookletEntity);
