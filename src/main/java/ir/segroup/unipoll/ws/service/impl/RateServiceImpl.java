@@ -8,6 +8,9 @@ import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
 import ir.segroup.unipoll.ws.model.entity.RateEntity;
 import ir.segroup.unipoll.ws.model.entity.StudentEntity;
 import ir.segroup.unipoll.ws.model.request.RateRequest;
+import ir.segroup.unipoll.ws.model.response.ARateResponse;
+import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
+import ir.segroup.unipoll.ws.model.response.RateResponse;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
 import ir.segroup.unipoll.ws.repository.RateRepository;
 import ir.segroup.unipoll.ws.repository.StudentRepository;
@@ -44,13 +47,13 @@ public class RateServiceImpl implements RateService {
     @Override
     public ResponseEntity<BaseApiResponse> addInstructorCourseRate(String token, String publicId, RateRequest rateRequest) {
         String username = rateUtil.getUsernameFromToken(token);
-        StudentEntity studentEntity = studentRepository.findByUsername(username).orElseThrow(() -> {
-            logger.log(Level.OFF, "Failed to get student details");
-            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
-        });
-        InstructorCourseEntity instructorCourseEntity = instructorCourseRepository.findByPublicId(publicId).orElseThrow(() -> {
-            logger.log(Level.OFF, "Failed to get instructor course details");
-            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            StudentEntity studentEntity = studentRepository.findByUsername(username).orElseThrow(() -> {
+                logger.log(Level.OFF, "Failed to get student details");
+                return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            });
+            InstructorCourseEntity instructorCourseEntity = instructorCourseRepository.findByPublicId(publicId).orElseThrow(() -> {
+                logger.log(Level.OFF, "Failed to get instructor course details");
+                return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
         });
         Optional<RateEntity> existRate = rateRepository.findByStudentEntityAndInstructorCourseEntity(studentEntity,instructorCourseEntity);
         RateEntity rateEntity;
@@ -69,5 +72,23 @@ public class RateServiceImpl implements RateService {
         List<RateEntity> rateList = rateRepository.findByInstructorCourseEntity(instructorCourseEntity);
         return rateUtil.createResponse(rateUtil.convert(rateList, savedRateEntity.getNumber()),HttpStatus.CREATED);
 
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> getARate(String token, String publicId) {
+        String username = rateUtil.getUsernameFromToken(token);
+        StudentEntity studentEntity = studentRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get student details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        InstructorCourseEntity instructorCourseEntity = instructorCourseRepository.findByPublicId(publicId).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get instructor course details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        Optional<RateEntity> rateEntity = rateRepository.findByStudentEntityAndInstructorCourseEntity(studentEntity,instructorCourseEntity);
+        if (rateEntity.isEmpty())
+            throw new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(),HttpStatus.NOT_FOUND);
+        ARateResponse rateResponse = rateUtil.convert(rateEntity.get());
+        return rateUtil.createResponse(rateResponse, HttpStatus.OK);
     }
 }
