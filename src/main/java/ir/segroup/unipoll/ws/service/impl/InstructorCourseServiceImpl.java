@@ -18,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static ir.segroup.unipoll.ws.repository.SpecificationImpl.InstructorCourseSpecificationImpl.fromCourseName;
 
@@ -102,7 +99,7 @@ public class InstructorCourseServiceImpl implements InstructorCourseService {
             throw new SystemServiceException(ExceptionMessages.FORBIDDEN_EDIT_IC_DESCRIPTION_REQUEST.getMessage(),HttpStatus.FORBIDDEN);
         }
         instructorCourseEntity.setDescription(newDescription);
-        instructorCourseEntity.setLastUpdate(instructorCourseUtil.getJalaliDate());
+        instructorCourseEntity.setLastUpdate(instructorCourseUtil.getJalaliDate(new Date()));
         InstructorCourseEntity savedEntity ;
         try {
         savedEntity=instructorCourseRepository.save(instructorCourseEntity);

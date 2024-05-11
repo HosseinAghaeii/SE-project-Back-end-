@@ -30,7 +30,10 @@ public class CommentCEntity implements Serializable {
     @JoinColumn(name = "term_id")
     private TermEntity termEntity;
 
-    private String createdDate;
+    private Date createdDate;
+
+    @Column(nullable = false)
+    private boolean isUnknown;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

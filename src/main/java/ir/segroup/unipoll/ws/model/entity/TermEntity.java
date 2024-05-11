@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "terms")
-public class TermEntity {
+public class TermEntity implements Serializable {
     @Id
     private Long id;
 
