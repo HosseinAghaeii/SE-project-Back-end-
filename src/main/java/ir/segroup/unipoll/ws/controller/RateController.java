@@ -53,4 +53,18 @@ public class RateController {
         String token = request.getHeader("Authorization");
         return rateService.addInstructorCourseRate(token, publicId, rateRequest);
     }
+
+    @GetMapping("/{publicId}")
+    @Operation(summary = "Add rate to instructor course")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404",
+                    description = "Could not find a rate",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "200",
+                    description = "Return a rate successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
+    public ResponseEntity<BaseApiResponse> getARate(HttpServletRequest request, @PathVariable String publicId) {
+        String token = request.getHeader("Authorization");
+        return rateService.getARate(token, publicId);
+    }
 }
