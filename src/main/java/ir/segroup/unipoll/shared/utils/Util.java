@@ -46,8 +46,7 @@ public class Util {
         }
     }
 
-    public String getJalaliDate() {
-        Date date = new Date();
+    public String getJalaliDate(Date date) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -55,6 +54,8 @@ public class Util {
         int gy = calendar.get(Calendar.YEAR);
         int gm = localDate.getMonthValue();
         int gd = calendar.get(Calendar.DATE);
+
+
 
         int days;
         int jm;

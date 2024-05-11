@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface CommentCService {
     ResponseEntity<BaseApiResponse> createComment(CommentCRequest request,String token);
+
+    ResponseEntity<BaseApiResponse> getAIcComments(String icPublicId, boolean filterTopFive);
 }

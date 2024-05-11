@@ -64,6 +64,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/instructor-course/filter")).permitAll(); // سرچ درس استاد
                     requests.requestMatchers(antMatcher("/instructor-course/edit-description/**")).hasAnyRole(INSTRUCTOR); // ویرایش درس استاد
                     requests.requestMatchers(antMatcher("/comment-c")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // ساخت کامنت درس استاد
+                    requests.requestMatchers(antMatcher("/comment-c/**")).permitAll(); // دریافت کامنت های یک درس استاد
                     requests.requestMatchers((antMatcher("/term"))).permitAll();
 
                 })

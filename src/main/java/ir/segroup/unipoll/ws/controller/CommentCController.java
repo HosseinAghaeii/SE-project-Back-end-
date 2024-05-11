@@ -38,7 +38,7 @@ public class CommentCController {
             ),
             @ApiResponse(
                     responseCode = "200",
-                    description = "successfully edit description",
+                    description = "successfully create comment",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(
@@ -50,5 +50,29 @@ public class CommentCController {
     public ResponseEntity<BaseApiResponse> createComment(@RequestBody CommentCRequest commentCRequest, HttpServletRequest request){
         String token = request.getHeader("Authorization");
         return commentCService.createComment(commentCRequest,token);
+    }
+
+    @GetMapping("/{icPublicId}")
+    @Operation(summary = "Get comments of one instructor course. this methode have a query param: firstTopFive. default value = false")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "when ic public id not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "successfully get list of comment",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> getAIcComments(@PathVariable String icPublicId,
+                                                          @RequestParam(defaultValue = "false") boolean filterTopFive){
+        return commentCService.getAIcComments(icPublicId,filterTopFive);
     }
 }
