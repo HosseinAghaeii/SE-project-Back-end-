@@ -21,7 +21,7 @@ public class InstructorCourseUtil extends Util {
 
     public InstructorCourseResponse convert(InstructorCourseEntity instructorCourseEntity) {
         return InstructorCourseResponse.builder()
-                .publicId(instructorCourseEntity.getCourseEntity().getPublicId())
+                .publicId(instructorCourseEntity.getPublicId())
                 .lastUpdate(instructorCourseEntity.getLastUpdate())
                 .courseName(instructorCourseEntity.getCourseEntity().getName())
                 .instructorCourseFirstname(instructorCourseEntity.getInstructorEntity().getFirstname())
