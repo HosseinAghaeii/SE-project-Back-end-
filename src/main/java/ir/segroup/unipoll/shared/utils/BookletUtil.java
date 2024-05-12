@@ -3,6 +3,7 @@ package ir.segroup.unipoll.shared.utils;
 import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
+import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
@@ -48,8 +49,8 @@ public class BookletUtil extends Util {
         }
     }
 
-    public BookletEntity convert(MultipartFile booklet, BookletRequest bookletRequest) {
-        String filePath = fileStorageLocation + booklet.getOriginalFilename();
+    public BookletEntity convert(MultipartFile booklet, BookletRequest bookletRequest, UserEntity userEntity) {
+        String filePath = fileStorageLocation + "_" + booklet.getOriginalFilename();
         if (booklet.isEmpty())
             return null;
         return BookletEntity.builder()
@@ -58,6 +59,7 @@ public class BookletUtil extends Util {
                 .termEntity(termRepository.findByPublicId(bookletRequest.getTermPublicId())
                         .orElseThrow(() -> new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.BAD_REQUEST)))
                 .text(bookletRequest.getText())
+                .uploaderUser(userEntity)
                 .instructorCourseEntity(instructorCourseRepository.findByPublicId(bookletRequest.getInstCoursePublicId())
                         .orElseThrow(() -> new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.BAD_REQUEST)))
                 .build();

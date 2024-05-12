@@ -4,6 +4,7 @@ import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
 import ir.segroup.unipoll.ws.model.entity.RateEntity;
 import ir.segroup.unipoll.ws.model.entity.StudentEntity;
 import ir.segroup.unipoll.ws.model.request.RateRequest;
+import ir.segroup.unipoll.ws.model.response.ARateResponse;
 import ir.segroup.unipoll.ws.model.response.RateResponse;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,12 @@ public class RateUtil extends Util{
                 .number(rateRequest.getRate())
                 .instructorCourseEntity(instructorCourseEntity)
                 .studentEntity(studentEntity)
+                .build();
+    }
+
+    public ARateResponse convert(RateEntity rateEntity){
+        return ARateResponse.builder()
+                .rate(rateEntity.getNumber())
                 .build();
     }
 

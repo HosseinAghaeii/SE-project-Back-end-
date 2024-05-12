@@ -53,6 +53,11 @@ public class BookletController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "404",
+                    description = "Username not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "204",
                     description = "Error in get data -array of bytes- from MultipartFile",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
@@ -62,16 +67,27 @@ public class BookletController {
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "Error in getting instructor course public id or term",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student,instructor and admin",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
                     responseCode = "500",
                     description = "System Default Exception (SDE), or when database IO exception occurred",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             )
     })
     public ResponseEntity<BaseApiResponse> uploadBooklet(@RequestParam("file") MultipartFile booklet,
-                                                         @ModelAttribute("bookletRequest") BookletRequest bookletRequest){
-        return bookletService.uploadBooklet(booklet, bookletRequest);
+                                                         @ModelAttribute("bookletRequest") BookletRequest bookletRequest,
+                                                         HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        return bookletService.uploadBooklet(booklet, bookletRequest, token);
     }
-
 
     @GetMapping
     @Operation(summary = "Get top ten booklet")
