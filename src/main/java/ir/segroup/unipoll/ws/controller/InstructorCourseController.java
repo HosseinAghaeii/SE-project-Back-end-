@@ -94,4 +94,27 @@ public class InstructorCourseController {
 
     }
 
+    @GetMapping("/enable-to-edit/{publicId}")
+    @Operation(summary = "Specifies whether the user is allowed to change the course description or not")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "401",
+                    description = "Only teachers can call this api.If another user try to call this methode or jwt is wrong app send 401 code",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "403",
+                    description = "When the teacher or administrator who does not own this lesson tries to change the description",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "404",
+                    description = "when ic public id not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "200",
+                    description = "successfully return old description",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
+    public ResponseEntity<BaseApiResponse> isEnableToEdit(@PathVariable String publicId,HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        return instructorCourseService.isEnableToEdit(publicId,token);
+    }
+
 }

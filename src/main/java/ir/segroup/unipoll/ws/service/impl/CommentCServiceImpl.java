@@ -5,11 +5,12 @@ import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.shared.utils.CommentCUtil;
 import ir.segroup.unipoll.ws.model.entity.CommentCEntity;
-import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
+import ir.segroup.unipoll.ws.model.entity.TermEntity;
 import ir.segroup.unipoll.ws.model.request.CommentCRequest;
 import ir.segroup.unipoll.ws.model.response.CommentCResponse;
 import ir.segroup.unipoll.ws.repository.CommentCRepository;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
+import ir.segroup.unipoll.ws.repository.TermRepository;
 import ir.segroup.unipoll.ws.service.CommentCService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,13 @@ public class CommentCServiceImpl implements CommentCService {
     private final CommentCUtil util;
     private final CommentCRepository commentCRepository;
     private final InstructorCourseRepository icRepository;
+    private final TermRepository termRepository;
 
-    public CommentCServiceImpl(CommentCUtil util, CommentCRepository commentCRepository, InstructorCourseRepository icRepository) {
+    public CommentCServiceImpl(CommentCUtil util, CommentCRepository commentCRepository, InstructorCourseRepository icRepository, TermRepository termRepository) {
         this.util = util;
         this.commentCRepository = commentCRepository;
         this.icRepository = icRepository;
+        this.termRepository = termRepository;
     }
 
     @Override
@@ -46,12 +49,18 @@ public class CommentCServiceImpl implements CommentCService {
     }
 
     @Override
-    public ResponseEntity<BaseApiResponse> getAIcComments(String icPublicId, boolean filterTopFive) {
+    public ResponseEntity<BaseApiResponse> getAIcComments(String icPublicId, boolean filterTopFive,String termPublicId) {
          return icRepository.findByPublicId(icPublicId)
                 .map(instructorCourseEntity -> {
                     List<CommentCEntity> commentCEntities = commentCRepository.findAll().stream()
                             .filter(entity -> entity.getIcEntity().getPublicId().equals(icPublicId))
                             .sorted(Comparator.comparing(CommentCEntity::getCreatedDate).reversed()).toList();
+                    if (!termPublicId.equals("null")){
+                        TermEntity termEntity = termRepository.findByPublicId(termPublicId).orElseThrow(() ->
+                                new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND));
+                        commentCEntities = commentCEntities.stream()
+                                .filter(entity -> entity.getTermEntity().getPublicId().equals(termEntity.getPublicId())).toList();
+                    }
                     if (filterTopFive){
                         commentCEntities = commentCEntities.stream().limit(5).toList();
                     }

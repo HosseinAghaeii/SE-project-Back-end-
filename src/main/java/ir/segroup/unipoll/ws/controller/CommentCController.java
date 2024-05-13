@@ -57,7 +57,7 @@ public class CommentCController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "404",
-                    description = "when ic public id not found",
+                    description = "when ic public id or term public id not found",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(
@@ -72,7 +72,8 @@ public class CommentCController {
             )
     })
     public ResponseEntity<BaseApiResponse> getAIcComments(@PathVariable String icPublicId,
-                                                          @RequestParam(defaultValue = "false") boolean filterTopFive){
-        return commentCService.getAIcComments(icPublicId,filterTopFive);
+                                                          @RequestParam(defaultValue = "false") boolean filterTopFive,
+                                                          @RequestParam(defaultValue = "null") String term){
+        return commentCService.getAIcComments(icPublicId,filterTopFive,term);
     }
 }
