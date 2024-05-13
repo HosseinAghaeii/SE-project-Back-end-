@@ -18,4 +18,5 @@ public interface InstructorCourseService {
     ResponseEntity<BaseApiResponse> editDescription(String publicId,String token,String newDescription);
 
 
+    ResponseEntity<BaseApiResponse> isEnableToEdit(String publicId, String token);
 }

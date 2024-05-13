@@ -115,5 +115,17 @@ public class InstructorCourseServiceImpl implements InstructorCourseService {
         return instructorCourseUtil.createResponse(response,HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<BaseApiResponse> isEnableToEdit(String publicId, String token) {
+        String username = instructorCourseUtil.getUsernameFromToken(token);
+        InstructorCourseEntity instructorCourseEntity =instructorCourseRepository.findByPublicId(publicId).orElseThrow(() ->
+                new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)
+        );
+        if (!instructorCourseEntity.getInstructorEntity().getUsername().equals(username)){
+            throw new SystemServiceException(ExceptionMessages.FORBIDDEN_EDIT_IC_DESCRIPTION_REQUEST.getMessage(),HttpStatus.FORBIDDEN);
+        }
+        return instructorCourseUtil.createResponse(instructorCourseEntity.getDescription(),HttpStatus.OK);
+    }
+
 
 }
