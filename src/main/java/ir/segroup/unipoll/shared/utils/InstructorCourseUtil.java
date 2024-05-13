@@ -29,6 +29,7 @@ public class InstructorCourseUtil extends Util {
                 .description(instructorCourseEntity.getDescription())
                 .rate(calculateRate(instructorCourseEntity.getRateEntities()))
                 .unit(instructorCourseEntity.getCourseEntity().getUnit())
+                .rate_num(instructorCourseEntity.getRateEntities().size())
                 .build();
     }
 

@@ -76,6 +76,7 @@ public class BookletUtil extends Util {
                 .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
                 .term(bookletEntity.getTermEntity().getName())
                 .likeNumber(bookletEntity.getLikes().size())
+                .description(bookletEntity.getText())
                 .build();
         if (username == null) {
             response.setIsLiked(null);
@@ -108,6 +109,7 @@ public class BookletUtil extends Util {
                 .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
                 .term(bookletEntity.getTermEntity().getName())
                 .likeNumber(bookletEntity.getLikes().size())
+                .description(bookletEntity.getText())
                 .build();
         if (username == null) {
             response.setIsLiked(null);
