@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Component
-public class CommentCUtil extends Util{
+public class CommentCUtil extends Util {
     private final TermRepository termRepository;
     private final InstructorCourseRepository icRepository;
     private final UserRepository userRepository;
@@ -26,7 +26,7 @@ public class CommentCUtil extends Util{
         this.userRepository = userRepository;
     }
 
-    public CommentCEntity convert(CommentCRequest request,String username){
+    public CommentCEntity convert(CommentCRequest request, String username) {
         return CommentCEntity.builder()
                 .text(request.getText())
                 .icEntity(icRepository.findByPublicId(request.getIcPublicId()).orElseThrow(() ->
@@ -41,10 +41,15 @@ public class CommentCUtil extends Util{
                 .build();
     }
 
-    public CommentCResponse convert(CommentCEntity entity){
+    public CommentCResponse convert(CommentCEntity entity) {
 
-        String writerName = entity.isUnknown() ? "unknown":entity.getUserEntity().getFirstname()+" "+entity.getUserEntity().getLastname();
-
+        String writerName = entity.isUnknown() ? "ناشناس" : entity.getUserEntity().getFirstname() + " " + entity.getUserEntity().getLastname();
+        String writerType = switch (entity.getUserEntity().getRole()) {
+            case "ADMIN" -> "ادمین";
+            case "STUDENT" -> "دانشجو";
+            case "INSTRUCTOR" -> "استاد";
+            default -> throw new IllegalStateException("Unexpected value: " + entity.getUserEntity().getRole());
+        };
 
         return CommentCResponse.builder()
                 .writerName(writerName)
@@ -52,7 +57,7 @@ public class CommentCUtil extends Util{
                 .createdDate(getJalaliDate(entity.getCreatedDate()))
                 .publicId(entity.getPublicId())
                 .term(entity.getTermEntity().getName())
-                .writerType(entity.getUserEntity().getRole())
+                .writerType(writerType)
                 .build();
     }
 

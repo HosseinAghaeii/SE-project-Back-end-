@@ -62,6 +62,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/rate/**")).hasAnyRole(ADMIN,STUDENT);
                     requests.requestMatchers(antMatcher("/instructor-course/**")).permitAll(); // لیست درس استاد های برتر
                     requests.requestMatchers(antMatcher("/instructor-course/filter")).permitAll(); // سرچ درس استاد
+                    requests.requestMatchers(antMatcher("/instructor-course/enable-to-edit/**")).hasAnyRole(INSTRUCTOR); // اجازه ویرایش درس استاد
                     requests.requestMatchers(antMatcher("/instructor-course/edit-description/**")).hasAnyRole(INSTRUCTOR); // ویرایش درس استاد
                     requests.requestMatchers(antMatcher("/comment-c")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // ساخت کامنت درس استاد
                     requests.requestMatchers(antMatcher("/comment-c/**")).permitAll(); // دریافت کامنت های یک درس استاد
