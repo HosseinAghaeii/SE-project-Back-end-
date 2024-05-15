@@ -137,4 +137,18 @@ public class BookletController {
         String token = request.getHeader("Authorization");
         return bookletService.likeABooklet(token,bookletPublicId);
     }
+
+    @GetMapping("/{publicId}")
+    @Operation(summary = "Get a desired booklet")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404",
+                    description = "Could not find a booklet with this publicId",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "200",
+                    description = "Return a desired booklet successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
+    public ResponseEntity<BaseApiResponse> getABooklet(HttpServletRequest request, @PathVariable String publicId) {
+        String token = request.getHeader("Authorization");
+        return bookletService.getABooklet(token, publicId);
+    }
 }
