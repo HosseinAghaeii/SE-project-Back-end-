@@ -1,23 +1,19 @@
 package ir.segroup.unipoll.ws.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
-@Table(name = "booklet_comments")
-public class CommentBEntity implements Serializable {
+@Builder
+@Table(name = "course_comments")
+public class ICCommentEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +24,20 @@ public class CommentBEntity implements Serializable {
     @Column(columnDefinition = "LONGTEXT")
     private String text;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "term_id")
+    private TermEntity termEntity;
+
     private Date createdDate;
+
+    @Column(nullable = false)
+    private boolean isUnknown;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "booklet_id")
-    private BookletEntity bookletEntity;
+    @JoinColumn(name = "ic_id")
+    private InstructorCourseEntity icEntity;
 }

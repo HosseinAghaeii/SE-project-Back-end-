@@ -33,12 +33,12 @@ public class InstructorCourseEntity implements Serializable {
     @Column(columnDefinition = "LONGTEXT")
     private String description;
 
-    @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER)
     private List<BookletEntity> bookletEntities;
 
     @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<RateEntity> rateEntities;
 
     @OneToMany(mappedBy = "icEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<CommentCEntity> commentCEntities;
+    private List<ICCommentEntity> commentCEntities;
 }
