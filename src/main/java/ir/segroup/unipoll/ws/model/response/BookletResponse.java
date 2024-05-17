@@ -45,9 +45,12 @@ public class BookletResponse {
             "1- true" +
             "2-false" +
             "3-null: request send without jwt token",example = "حسین")
+    private Boolean isLiked;
 
     @Column(columnDefinition = "LONGTEXT")
     private String description;
 
-    private Boolean isLiked;
+    private boolean teacherLike;
+
+
 }
