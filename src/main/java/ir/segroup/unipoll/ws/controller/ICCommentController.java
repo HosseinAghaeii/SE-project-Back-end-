@@ -53,7 +53,8 @@ public class ICCommentController {
     }
 
     @GetMapping("/{icPublicId}")
-    @Operation(summary = "Get comments of one instructor course. this methode have a query param: firstTopFive. default value = false")
+    @Operation(summary = "Get comments of one instructor course. this methode have a query param:" +
+            " firstTopFive. default value = false , term publicId")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "404",
