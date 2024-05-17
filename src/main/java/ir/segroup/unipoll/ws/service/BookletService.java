@@ -10,4 +10,8 @@ public interface BookletService  {
     ResponseEntity<BaseApiResponse> uploadBooklet(MultipartFile booklet, BookletRequest bookletRequest, String token);
     ResponseEntity<BaseApiResponse> getTenTopBooklets(String token);
     ResponseEntity<BaseApiResponse> likeABooklet(String token,String bookletPublicId);
+
+    ResponseEntity<BaseApiResponse> editDescription(String publicId, String token, String newDescription);
+
+    ResponseEntity<BaseApiResponse> isEnableToEdit(String publicId, String token);
 }

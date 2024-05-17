@@ -8,6 +8,7 @@ import ir.segroup.unipoll.ws.model.entity.BookletEntity;
 import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
+import ir.segroup.unipoll.ws.model.response.UpdateBookletDescriptionResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.repository.UserRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
@@ -127,5 +128,39 @@ public class BookletServiceImpl implements BookletService {
         return bookletUtil.createResponse("SUCCESSFULLY",HttpStatus.CREATED);
     }
 
+    @Override
+    public ResponseEntity<BaseApiResponse> editDescription(String publicId, String token, String newDescription) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(publicId).orElseThrow(() ->
+                new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)
+        );
+        if (!bookletEntity.getUploaderUser().getUsername().equals(username)){
+            throw new SystemServiceException(ExceptionMessages.FORBIDDEN_EDIT_BOOKLET_DESCRIPTION_REQUEST.getMessage(),HttpStatus.FORBIDDEN);
+        }
+        bookletEntity.setText(newDescription);
+        BookletEntity savedEntity;
+        try {
+            savedEntity=bookletRepository.save(bookletEntity);
+        }catch (Exception e){
+            throw new SystemServiceException(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        UpdateBookletDescriptionResponse response = UpdateBookletDescriptionResponse.builder()
+                .description(savedEntity.getText()).build();
+
+        return bookletUtil.createResponse(response,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> isEnableToEdit(String publicId, String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(publicId).orElseThrow(() ->
+                new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)
+        );
+        if (!bookletEntity.getUploaderUser().getUsername().equals(username)){
+            throw new SystemServiceException(ExceptionMessages.FORBIDDEN_EDIT_BOOKLET_DESCRIPTION_REQUEST.getMessage(),HttpStatus.FORBIDDEN);
+        }
+        return bookletUtil.createResponse(bookletEntity.getText(),HttpStatus.OK);
+    }
 
 }
