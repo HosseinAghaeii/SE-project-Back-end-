@@ -48,5 +48,5 @@ public class BookletEntity implements Serializable {
     private InstructorCourseEntity instructorCourseEntity;
 
     @OneToMany(mappedBy = "bookletEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<CommentBEntity> commentBEntities;
+    private List<BookletCommentEntity> commentBEntities;
 }

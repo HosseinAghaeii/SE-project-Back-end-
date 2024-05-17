@@ -2,20 +2,18 @@ package ir.segroup.unipoll.ws.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
 @Builder
-@Table(name = "course_comments")
-public class CommentCEntity implements Serializable {
+@Table(name = "booklet_comments")
+public class BookletCommentEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +23,6 @@ public class CommentCEntity implements Serializable {
 
     @Column(columnDefinition = "LONGTEXT")
     private String text;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "term_id")
-    private TermEntity termEntity;
 
     private Date createdDate;
 
@@ -40,6 +34,6 @@ public class CommentCEntity implements Serializable {
     private UserEntity userEntity;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ic_id")
-    private InstructorCourseEntity icEntity;
+    @JoinColumn(name = "booklet_id")
+    private BookletEntity bookletEntity;
 }

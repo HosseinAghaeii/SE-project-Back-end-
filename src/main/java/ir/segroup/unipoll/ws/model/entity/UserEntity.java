@@ -47,10 +47,10 @@ public class UserEntity implements Serializable {
     private List<BookletEntity> uploadedBooklets;
 
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<CommentBEntity> commentBEntities;
+    private List<BookletCommentEntity> commentBEntities;
 
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<CommentCEntity> commentCEntities;
+    private List<ICCommentEntity> commentCEntities;
 
     public UserEntity(String id,String firstname, String lastname, String username, String encryptedPassword, String role) {
         this.id = Long.parseLong(id);

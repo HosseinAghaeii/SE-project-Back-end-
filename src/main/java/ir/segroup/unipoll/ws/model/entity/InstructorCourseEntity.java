@@ -40,5 +40,5 @@ public class InstructorCourseEntity implements Serializable {
     private List<RateEntity> rateEntities;
 
     @OneToMany(mappedBy = "icEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<CommentCEntity> commentCEntities;
+    private List<ICCommentEntity> commentCEntities;
 }
