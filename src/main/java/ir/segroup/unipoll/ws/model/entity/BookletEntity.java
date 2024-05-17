@@ -39,11 +39,11 @@ public class BookletEntity implements Serializable {
     )
     private List<UserEntity> likes;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uploader_id")
     private UserEntity uploaderUser;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "ic_id")
     private InstructorCourseEntity instructorCourseEntity;
 

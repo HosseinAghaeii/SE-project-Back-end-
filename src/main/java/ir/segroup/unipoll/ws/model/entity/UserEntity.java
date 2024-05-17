@@ -43,7 +43,7 @@ public class UserEntity implements Serializable {
     @ManyToMany(mappedBy = "likes",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<BookletEntity> likedBooklets;
 
-    @OneToMany(mappedBy = "uploaderUser",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "uploaderUser",fetch = FetchType.EAGER)
     private List<BookletEntity> uploadedBooklets;
 
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
