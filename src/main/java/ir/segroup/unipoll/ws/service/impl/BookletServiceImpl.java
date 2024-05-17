@@ -5,9 +5,11 @@ import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.shared.utils.BookletUtil;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
+import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
 import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
+import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.repository.UserRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
@@ -69,7 +71,7 @@ public class BookletServiceImpl implements BookletService {
         try {
             BookletEntity savedBookletEntity = bookletRepository.save(bookletEntity);
             booklet.transferTo(new File(bookletEntity.getFilePath()));
-            return bookletUtil.createResponse(savedBookletEntity.getFilePath(), HttpStatus.CREATED);
+            return bookletUtil.createResponse(savedBookletEntity.getPublicId(), HttpStatus.CREATED);
         } catch (IOException exception) {
             logger.log(Level.OFF, exception.getMessage());
             throw new SystemServiceException(ExceptionMessages.FILE_EXCEPTION.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -125,6 +127,53 @@ public class BookletServiceImpl implements BookletService {
         }
 
         return bookletUtil.createResponse("SUCCESSFULLY",HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> deleteABooklet(String publicId, String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get user details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(publicId).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get booklet details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        if (!bookletEntity.getUploaderUser().getUsername().equals(userEntity.getUsername()))
+            throw new SystemServiceException(ExceptionMessages.FORBIDDEN_DELETE_BOOKLET_REQUEST.getMessage(), HttpStatus.FORBIDDEN);
+        try {
+            bookletRepository.delete(bookletEntity);
+        }catch (Exception e){
+            logger.log(Level.WARNING, e.getMessage());
+            throw new SystemServiceException(ExceptionMessages.DATABASE_IO_EXCEPTION.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return bookletUtil.createResponse("DELETING SUCCESSFULLY", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> getFavoriteBooklets(String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get user details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        List<BookletResponse> responses = userEntity.getFavoriteBooklets().stream()
+                .map(bookletEntity -> bookletUtil.convert(bookletEntity, username))
+                .toList();
+        return bookletUtil.createResponse(responses, HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<BaseApiResponse> getABooklet(String token, String publicId) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        Optional<BookletEntity> bookletEntity = bookletRepository.findByPublicId(publicId);
+        if (bookletEntity.isEmpty())
+            throw new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(),HttpStatus.NOT_FOUND);
+        BookletResponse bookletResponse = bookletUtil.convert(bookletEntity.get(), username);
+        return bookletUtil.createResponse(bookletResponse, HttpStatus.OK);
     }
 
 

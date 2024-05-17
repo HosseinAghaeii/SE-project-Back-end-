@@ -57,6 +57,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/booklet")).permitAll(); //لیست جزوه های برتر
                     requests.requestMatchers(antMatcher("/booklet/file/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); //آپلود و دانلود جزوه
                     requests.requestMatchers(antMatcher("/booklet/like/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // لایک جزوه
+                    requests.requestMatchers(antMatcher("/booklet/{publicId}")).permitAll(); //اطلاعات جزوه
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
                     requests.requestMatchers(antMatcher("/instructor/**")).permitAll();                
                     requests.requestMatchers(antMatcher("/rate/**")).hasAnyRole(ADMIN,STUDENT);
@@ -66,7 +67,10 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/instructor-course/edit-description/**")).hasAnyRole(INSTRUCTOR); // ویرایش درس استاد
                     requests.requestMatchers(antMatcher("/comment-c")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // ساخت کامنت درس استاد
                     requests.requestMatchers(antMatcher("/comment-c/**")).permitAll(); // دریافت کامنت های یک درس استاد
+                    requests.requestMatchers(antMatcher("/comment-b")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // ساخت کامنت جزوه
+                    requests.requestMatchers(antMatcher("/comment-b/**")).permitAll(); // دریافت کامنت های یک جزوه
                     requests.requestMatchers((antMatcher("/term"))).permitAll();
+                    requests.requestMatchers(antMatcher("/booklet/delete/**")).hasAnyRole(STUDENT,ADMIN,INSTRUCTOR);
 
                 })
                 .httpBasic(Customizer.withDefaults());

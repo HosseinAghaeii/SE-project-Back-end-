@@ -137,4 +137,90 @@ public class BookletController {
         String token = request.getHeader("Authorization");
         return bookletService.likeABooklet(token,bookletPublicId);
     }
+
+
+    @DeleteMapping("/delete/{publicId}")
+    @Operation(summary = "Delete a booklet")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "successfully delete a booklet",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Username or booklet not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student,instructor and admin",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Only the uploader of this booklet can delete it",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> deleteABooklet(HttpServletRequest request, @PathVariable String publicId){
+        String token = request.getHeader("Authorization");
+        return bookletService.deleteABooklet(publicId, token);
+    }
+
+    @GetMapping("/favorite-booklet")
+    @Operation(summary = "Get list of favorite booklets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return list of favorite booklets",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Username not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student,instructor and admin",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> getFavoriteBooklets(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return bookletService.getFavoriteBooklets(token);
+    }
+
+
+    @GetMapping("/{publicId}")
+    @Operation(summary = "Get a desired booklet")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Could not find a booklet with this publicId",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return a desired booklet successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> getABooklet (HttpServletRequest request, @PathVariable String publicId) {
+        String token = request.getHeader("Authorization");
+        return bookletService.getABooklet(token, publicId);
+
+    }
+
 }
