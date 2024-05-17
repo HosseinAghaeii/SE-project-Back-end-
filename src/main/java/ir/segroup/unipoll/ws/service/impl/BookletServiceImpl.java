@@ -5,9 +5,11 @@ import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.shared.utils.BookletUtil;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
+import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
 import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.request.BookletRequest;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
+import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.repository.UserRepository;
 import ir.segroup.unipoll.ws.service.BookletService;
@@ -162,6 +164,16 @@ public class BookletServiceImpl implements BookletService {
                 .map(bookletEntity -> bookletUtil.convert(bookletEntity, username))
                 .toList();
         return bookletUtil.createResponse(responses, HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<BaseApiResponse> getABooklet(String token, String publicId) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        Optional<BookletEntity> bookletEntity = bookletRepository.findByPublicId(publicId);
+        if (bookletEntity.isEmpty())
+            throw new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(),HttpStatus.NOT_FOUND);
+        BookletResponse bookletResponse = bookletUtil.convert(bookletEntity.get(), username);
+        return bookletUtil.createResponse(bookletResponse, HttpStatus.OK);
     }
 
 

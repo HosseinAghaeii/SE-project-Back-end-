@@ -12,4 +12,6 @@ public interface BookletService  {
     ResponseEntity<BaseApiResponse> likeABooklet(String token,String bookletPublicId);
     ResponseEntity<BaseApiResponse> deleteABooklet(String publicId, String token);
     ResponseEntity<BaseApiResponse> getFavoriteBooklets(String token);
+    ResponseEntity<BaseApiResponse> getABooklet(String token, String publicId);
+
 }

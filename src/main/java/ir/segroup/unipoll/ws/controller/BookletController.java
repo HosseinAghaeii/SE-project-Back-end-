@@ -138,6 +138,7 @@ public class BookletController {
         return bookletService.likeABooklet(token,bookletPublicId);
     }
 
+
     @DeleteMapping("/delete/{publicId}")
     @Operation(summary = "Delete a booklet")
     @ApiResponses(value = {
@@ -199,5 +200,19 @@ public class BookletController {
     public ResponseEntity<BaseApiResponse> getFavoriteBooklets(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         return bookletService.getFavoriteBooklets(token);
+
+    @GetMapping("/{publicId}")
+    @Operation(summary = "Get a desired booklet")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404",
+                    description = "Could not find a booklet with this publicId",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "200",
+                    description = "Return a desired booklet successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
+    public ResponseEntity<BaseApiResponse> getABooklet(HttpServletRequest request, @PathVariable String publicId) {
+        String token = request.getHeader("Authorization");
+        return bookletService.getABooklet(token, publicId);
+
     }
 }

@@ -57,6 +57,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/booklet")).permitAll(); //لیست جزوه های برتر
                     requests.requestMatchers(antMatcher("/booklet/file/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); //آپلود و دانلود جزوه
                     requests.requestMatchers(antMatcher("/booklet/like/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // لایک جزوه
+                    requests.requestMatchers(antMatcher("/booklet/{publicId}")).permitAll(); //اطلاعات جزوه
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
                     requests.requestMatchers(antMatcher("/instructor/**")).permitAll();                
                     requests.requestMatchers(antMatcher("/rate/**")).hasAnyRole(ADMIN,STUDENT);
