@@ -223,4 +223,32 @@ public class BookletController {
 
     }
 
+    @GetMapping("/uploaded-booklet")
+    @Operation(summary = "Get list of uploaded booklets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return list of uploaded booklets",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Username not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student and instructor",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> getUploadedBooklets(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return bookletService.getUploadedBooklets(token);
+    }
 }

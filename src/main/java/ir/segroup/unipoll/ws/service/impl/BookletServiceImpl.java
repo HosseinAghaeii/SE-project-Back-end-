@@ -176,5 +176,16 @@ public class BookletServiceImpl implements BookletService {
         return bookletUtil.createResponse(bookletResponse, HttpStatus.OK);
     }
 
-
+    @Override
+    public ResponseEntity<BaseApiResponse> getUploadedBooklets(String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get user details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        List<BookletResponse> responses = userEntity.getUploadedBooklets().stream()
+                .map(bookletEntity -> bookletUtil.convert(bookletEntity, username))
+                .toList();
+        return bookletUtil.createResponse(responses, HttpStatus.OK);
+    }
 }
