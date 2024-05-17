@@ -68,6 +68,7 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/comment-c")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // ساخت کامنت درس استاد
                     requests.requestMatchers(antMatcher("/comment-c/**")).permitAll(); // دریافت کامنت های یک درس استاد
                     requests.requestMatchers((antMatcher("/term"))).permitAll();
+                    requests.requestMatchers(antMatcher("/booklet/delete/**")).hasAnyRole(STUDENT,ADMIN,INSTRUCTOR);
 
                 })
                 .httpBasic(Customizer.withDefaults());
