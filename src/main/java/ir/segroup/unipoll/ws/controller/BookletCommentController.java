@@ -33,7 +33,7 @@ public class BookletCommentController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "when booklet public id not found",
+                    description = "when booklet public id or term public id not found",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(

@@ -26,6 +26,10 @@ public class BookletCommentEntity implements Serializable {
 
     private Date createdDate;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "term_id")
+    private TermEntity termEntity;
+
     @Column(nullable = false)
     private boolean isUnknown;
 
