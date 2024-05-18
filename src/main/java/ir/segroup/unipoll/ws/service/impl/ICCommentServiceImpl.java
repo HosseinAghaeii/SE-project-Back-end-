@@ -7,7 +7,7 @@ import ir.segroup.unipoll.shared.utils.CommentUtil;
 import ir.segroup.unipoll.ws.model.entity.ICCommentEntity;
 import ir.segroup.unipoll.ws.model.entity.TermEntity;
 import ir.segroup.unipoll.ws.model.request.CommentCRequest;
-import ir.segroup.unipoll.ws.model.response.ICCommentResponse;
+import ir.segroup.unipoll.ws.model.response.CommentResponse;
 import ir.segroup.unipoll.ws.repository.ICCommentRepository;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
 import ir.segroup.unipoll.ws.repository.TermRepository;
@@ -44,7 +44,7 @@ public class ICCommentServiceImpl implements ICCommentService {
         }catch (Exception e){
             throw new SystemServiceException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        ICCommentResponse response = util.convert(savedComment);
+        CommentResponse response = util.convert(savedComment);
         return util.createResponse(response,HttpStatus.OK);
     }
 
@@ -64,7 +64,7 @@ public class ICCommentServiceImpl implements ICCommentService {
                     if (filterTopFive){
                         commentCEntities = commentCEntities.stream().limit(5).toList();
                     }
-                    List<ICCommentResponse> responses = commentCEntities.stream().map(util::convert).toList();
+                    List<CommentResponse> responses = commentCEntities.stream().map(util::convert).toList();
                     return util.createResponse(responses,HttpStatus.OK);
                 })
                 .orElseThrow(() ->
