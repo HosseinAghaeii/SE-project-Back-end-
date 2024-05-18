@@ -14,4 +14,5 @@ public interface BookletService  {
     ResponseEntity<BaseApiResponse> getFavoriteBooklets(String token);
     ResponseEntity<BaseApiResponse> getABooklet(String token, String publicId);
 
+    ResponseEntity<BaseApiResponse> addToFavoriteBooklets(String publicId, String token);
 }
