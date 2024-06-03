@@ -5,7 +5,7 @@ import ir.segroup.unipoll.ws.model.request.BookletCommentRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface BookletCommentService {
-    ResponseEntity<BaseApiResponse> createComment(BookletCommentRequest bookletCommentRequest,String token);
+    ResponseEntity<BaseApiResponse> createComment(BookletCommentRequest bookletCommentRequest, String token);
 
     ResponseEntity<BaseApiResponse> getABookletComments(String publicId, boolean filterTopFive);
 }

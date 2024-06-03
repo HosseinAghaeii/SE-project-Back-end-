@@ -5,11 +5,8 @@ import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.shared.utils.CommentUtil;
 import ir.segroup.unipoll.ws.model.entity.BookletCommentEntity;
-import ir.segroup.unipoll.ws.model.entity.ICCommentEntity;
-import ir.segroup.unipoll.ws.model.entity.TermEntity;
 import ir.segroup.unipoll.ws.model.request.BookletCommentRequest;
-import ir.segroup.unipoll.ws.model.response.BookletCommentResponse;
-import ir.segroup.unipoll.ws.model.response.ICCommentResponse;
+import ir.segroup.unipoll.ws.model.response.CommentResponse;
 import ir.segroup.unipoll.ws.repository.BookletCommentRepository;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.service.BookletCommentService;
@@ -42,7 +39,7 @@ public class BookletCommentServiceImpl implements BookletCommentService {
         }catch (Exception e){
             throw new SystemServiceException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        BookletCommentResponse response = util.convert(savedComment);
+        CommentResponse response = util.convert(savedComment);
         return util.createResponse(response,HttpStatus.OK);
     }
 
@@ -56,7 +53,7 @@ public class BookletCommentServiceImpl implements BookletCommentService {
                     if (filterTopFive){
                         bookletCommentEntities = bookletCommentEntities.stream().limit(5).toList();
                     }
-                    List<BookletCommentResponse> responses = bookletCommentEntities.stream().map(util::convert).toList();
+                    List<CommentResponse> responses = bookletCommentEntities.stream().map(util::convert).toList();
                     return util.createResponse(responses,HttpStatus.OK);
                 })
                 .orElseThrow(() ->

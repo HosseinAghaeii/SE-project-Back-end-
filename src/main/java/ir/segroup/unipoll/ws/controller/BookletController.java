@@ -173,7 +173,7 @@ public class BookletController {
         return bookletService.deleteABooklet(publicId, token);
     }
 
-    @GetMapping("/favorite-booklet")
+    @GetMapping("/favorite")
     @Operation(summary = "Get list of favorite booklets")
     @ApiResponses(value = {
             @ApiResponse(
@@ -221,6 +221,41 @@ public class BookletController {
         String token = request.getHeader("Authorization");
         return bookletService.getABooklet(token, publicId);
 
+    }
+
+    @PostMapping("/favorite/{publicId}")
+    @Operation(summary = "َAdd one booklet to favorite booklets of one user")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student,instructor and admin",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "user or booklet not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "When user add this booklet to its favorite booklet later",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return list of favorite booklets",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> addToFavoriteBooklets(HttpServletRequest request,
+                                                                 @PathVariable String publicId){
+        String token = request.getHeader("Authorization");
+        return bookletService.addToFavoriteBooklets(publicId,token);
     }
 
 }

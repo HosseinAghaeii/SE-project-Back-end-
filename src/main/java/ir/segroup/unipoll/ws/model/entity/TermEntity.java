@@ -27,5 +27,8 @@ public class TermEntity implements Serializable {
     private List<ICCommentEntity> commentCEntities;
 
     @OneToMany(mappedBy = "termEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<BookletCommentEntity> bookletCommentEntities;
+
+    @OneToMany(mappedBy = "termEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<BookletEntity> bookletEntities;
 }

@@ -10,5 +10,6 @@ import lombok.*;
 public class BookletCommentRequest {
     private String text;
     private String bookletPublicId;
+    private String termPublicId;
     private boolean unknown;
 }

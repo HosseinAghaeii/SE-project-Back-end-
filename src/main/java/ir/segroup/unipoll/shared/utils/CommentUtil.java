@@ -6,8 +6,7 @@ import ir.segroup.unipoll.ws.model.entity.BookletCommentEntity;
 import ir.segroup.unipoll.ws.model.entity.ICCommentEntity;
 import ir.segroup.unipoll.ws.model.request.BookletCommentRequest;
 import ir.segroup.unipoll.ws.model.request.CommentCRequest;
-import ir.segroup.unipoll.ws.model.response.BookletCommentResponse;
-import ir.segroup.unipoll.ws.model.response.ICCommentResponse;
+import ir.segroup.unipoll.ws.model.response.CommentResponse;
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
 import ir.segroup.unipoll.ws.repository.TermRepository;
@@ -57,6 +56,8 @@ public class CommentUtil extends Util {
                     logger.log(Level.WARNING,"Invalid booklet publicId");
                     return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
                 } ))
+                .termEntity(termRepository.findByPublicId(request.getTermPublicId()).orElseThrow(() ->
+                        new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)))
                 .createdDate(new Date())
                 .userEntity(userRepository.findByUsername(username).orElseThrow(() ->
                         new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)))
@@ -65,8 +66,8 @@ public class CommentUtil extends Util {
                 .build();
     }
 
-    public ICCommentResponse convert(ICCommentEntity entity) {
-        return ICCommentResponse.builder()
+    public CommentResponse convert(ICCommentEntity entity) {
+        return CommentResponse.builder()
                 .writerName(getWriterName(entity.isUnknown(),entity.getUserEntity().getFirstname(),entity.getUserEntity().getLastname()))
                 .text(entity.getText())
                 .createdDate(getJalaliDate(entity.getCreatedDate()))
@@ -76,12 +77,13 @@ public class CommentUtil extends Util {
                 .build();
     }
 
-    public BookletCommentResponse convert(BookletCommentEntity entity) {
-        return BookletCommentResponse.builder()
+    public CommentResponse convert(BookletCommentEntity entity) {
+        return CommentResponse.builder()
                 .writerName(getWriterName(entity.isUnknown(),entity.getUserEntity().getFirstname(),entity.getUserEntity().getLastname()))
                 .text(entity.getText())
                 .createdDate(getJalaliDate(entity.getCreatedDate()))
                 .publicId(entity.getPublicId())
+                .term(entity.getTermEntity().getName())
                 .writerType(getWriterType(entity.getUserEntity().getRole()))
                 .build();
     }
