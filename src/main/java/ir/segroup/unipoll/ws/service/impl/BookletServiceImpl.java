@@ -130,6 +130,37 @@ public class BookletServiceImpl implements BookletService {
     }
 
     @Override
+    public ResponseEntity<BaseApiResponse> unlikeABooklet(String token, String bookletPublicId) {
+        String username = bookletUtil.getUsernameFromToken(token);
+
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get user details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(bookletPublicId).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get booklet details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+
+        if (bookletEntity.getLikes().stream().filter(u -> u.getUsername().equals(username)).findFirst().isEmpty()){
+            logger.log(Level.OFF, "The user has not liked this booklet before");
+         throw new SystemServiceException(ExceptionMessages.UNLIKE_REQUEST_WITHOUT_LIKE.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        userEntity.getLikedBooklets().remove(bookletEntity);
+        bookletEntity.getLikes().remove(userEntity);
+        try {
+            userRepository.save(userEntity);
+            bookletRepository.save(bookletEntity);
+        }catch (Exception e){
+            logger.log(Level.OFF,"Error in write into db");
+            throw new SystemServiceException(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return bookletUtil.createResponse("USER SUCCESSFULLY UNLIKE THIS BOOKLET",HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<BaseApiResponse> deleteABooklet(String publicId, String token) {
         String username = bookletUtil.getUsernameFromToken(token);
 
@@ -191,11 +222,39 @@ public class BookletServiceImpl implements BookletService {
                 .anyMatch(bookletEntity1 -> bookletEntity1.getPublicId().equals(bookletEntity.getPublicId()))){
             throw new SystemServiceException(ExceptionMessages.RECORD_ALREADY_EXISTS.getMessage(), HttpStatus.CONFLICT);
         }
-        List<BookletEntity> favoritedBooklets = userEntity.getFavoriteBooklets();
-        favoritedBooklets.add(bookletEntity);
-        userEntity.setFavoriteBooklets(favoritedBooklets);
+        userEntity.getFavoriteBooklets().add(bookletEntity);
+        bookletEntity.getFavoritedUsers().add(userEntity);
         try {
             userRepository.save(userEntity);
+            bookletRepository.save(bookletEntity);
+        }catch (Exception e){
+            logger.log(Level.OFF,e.getMessage());
+            throw new SystemServiceException(ExceptionMessages.DATABASE_IO_EXCEPTION.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return bookletUtil.createResponse("Booklet successfully add to favorite booklets of this user",HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> removeFromFavoriteBooklets(String publicId, String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get user details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(publicId).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get booklet details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        if (userEntity.getFavoriteBooklets().stream()
+                .noneMatch(bookletEntity1 -> bookletEntity1.getPublicId().equals(bookletEntity.getPublicId()))){
+            throw new SystemServiceException(ExceptionMessages.DISSAVE_REQUEST_WITHOUT_SAVE.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        userEntity.getFavoriteBooklets().remove(bookletEntity);
+        bookletEntity.getFavoritedUsers().remove(userEntity);
+        try {
+            userRepository.save(userEntity);
+            bookletRepository.save(bookletEntity);
         }catch (Exception e){
             logger.log(Level.OFF,e.getMessage());
             throw new SystemServiceException(ExceptionMessages.DATABASE_IO_EXCEPTION.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
