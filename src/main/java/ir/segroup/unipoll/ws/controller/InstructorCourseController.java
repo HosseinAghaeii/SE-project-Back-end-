@@ -88,7 +88,9 @@ public class InstructorCourseController {
             @ApiResponse(responseCode = "500",
                     description = "System Default Exception (SDE), or when database IO exception occurred",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
-    public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId, @RequestBody String newDescription, HttpServletRequest request) {
+    public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId,
+                                                           @RequestBody String newDescription,
+                                                           HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         return instructorCourseService.editDescription(publicId, token, newDescription);
 

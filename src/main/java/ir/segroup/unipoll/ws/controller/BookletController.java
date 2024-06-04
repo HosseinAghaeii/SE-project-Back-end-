@@ -118,6 +118,11 @@ public class BookletController {
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(
+                    responseCode = "404",
+                    description = "Wrong booklet public id",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
                     responseCode = "409",
                     description = "User has already liked booklet.",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
@@ -136,6 +141,40 @@ public class BookletController {
     public ResponseEntity<BaseApiResponse> likeABooklet(HttpServletRequest request, @PathVariable String bookletPublicId){
         String token = request.getHeader("Authorization");
         return bookletService.likeABooklet(token,bookletPublicId);
+    }
+
+    @DeleteMapping ("/dislike/{bookletPublicId}")
+    @Operation(summary = "Unlike a booklet")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "successfully unlike a booklet",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Wrong booklet public id",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "User has not liked this booklet before and try to unlike it!",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student,instructor and admin",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> unlikeABooklet(HttpServletRequest request, @PathVariable String bookletPublicId){
+        String token = request.getHeader("Authorization");
+        return bookletService.unlikeABooklet(token,bookletPublicId);
     }
 
 
@@ -223,7 +262,7 @@ public class BookletController {
 
     }
 
-    @PostMapping("/favorite/{publicId}")
+    @PostMapping("/save/{publicId}")
     @Operation(summary = "َAdd one booklet to favorite booklets of one user")
     @ApiResponses(value = {
             @ApiResponse(
@@ -257,5 +296,42 @@ public class BookletController {
         String token = request.getHeader("Authorization");
         return bookletService.addToFavoriteBooklets(publicId,token);
     }
+
+    @DeleteMapping("/dissave/{publicId}")
+    @Operation(summary = "Remove one booklet to favorite booklets of one user")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student,instructor and admin",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "user or booklet not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "When user did not add this booklet to its favorite booklet later",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully remove this booklet in favorite booklet",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> removeFromFavoriteBooklets(HttpServletRequest request,
+                                                                 @PathVariable String publicId){
+        String token = request.getHeader("Authorization");
+        return bookletService.removeFromFavoriteBooklets(publicId,token);
+    }
+
+
 
 }

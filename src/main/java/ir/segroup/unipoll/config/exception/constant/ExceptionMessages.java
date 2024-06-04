@@ -24,7 +24,9 @@ public enum ExceptionMessages {
     COULD_NOT_CREAT_DIRECTORY("Could not create the directory where the uploaded files will be stored"),
     DUPLICATED_LIKE("This user has already liked booklet"),
     FORBIDDEN_EDIT_IC_DESCRIPTION_REQUEST("Only the teacher of this course can edit its description"),
-    FORBIDDEN_DELETE_BOOKLET_REQUEST("Only the uploader of this booklet can delete it")
+    FORBIDDEN_DELETE_BOOKLET_REQUEST("Only the uploader of this booklet can delete it"),
+    UNLIKE_REQUEST_WITHOUT_LIKE("The user has not liked this booklet before"),
+    DISSAVE_REQUEST_WITHOUT_SAVE("The user has not saved this booklet before"),
     ;
 
     private final String message;

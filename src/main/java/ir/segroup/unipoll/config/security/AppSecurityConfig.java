@@ -57,8 +57,10 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/booklet")).permitAll(); //لیست جزوه های برتر
                     requests.requestMatchers(antMatcher("/booklet/file/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); //آپلود و دانلود جزوه
                     requests.requestMatchers(antMatcher("/booklet/like/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // لایک جزوه
+                    requests.requestMatchers(antMatcher("/booklet/dislike/**")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // حذف لایک جزوه
                     requests.requestMatchers(antMatcher("/booklet/favorite")).hasAnyRole(ADMIN,STUDENT,INSTRUCTOR); // دریافت لیست جزوه های مورد علاقه
-                    requests.requestMatchers(antMatcher("/booklet/favorite/**")).hasAnyRole(STUDENT,ADMIN,INSTRUCTOR); // اضافه کردن جزوه به لیست جزوه های مورد علاقه
+                    requests.requestMatchers(antMatcher("/booklet/save/**")).hasAnyRole(STUDENT,ADMIN,INSTRUCTOR); // اضافه کردن جزوه به لیست جزوه های مورد علاقه
+                    requests.requestMatchers(antMatcher("/booklet/dissave/**")).hasAnyRole(STUDENT,ADMIN,INSTRUCTOR); // حذف جزوه از لیست جزوه های مورد علاقه
                     requests.requestMatchers(antMatcher("/booklet/{publicId}")).permitAll(); //اطلاعات جزوه
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
                     requests.requestMatchers(antMatcher("/instructor/**")).permitAll();                
