@@ -18,7 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import ir.segroup.unipoll.ws.model.response.UpdateBookletDescriptionResponse;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -262,5 +262,51 @@ public class BookletServiceImpl implements BookletService {
         return bookletUtil.createResponse("Booklet successfully add to favorite booklets of this user",HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<BaseApiResponse> getUploadedBooklets(String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> {
+            logger.log(Level.OFF, "Failed to get user details");
+            return new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        });
+        List<BookletResponse> responses = userEntity.getUploadedBooklets().stream()
+                .map(bookletEntity -> bookletUtil.convert(bookletEntity, username))
+                .toList();
+        return bookletUtil.createResponse(responses, HttpStatus.OK);
+    }
 
+    @Override
+    public ResponseEntity<BaseApiResponse> editDescription(String publicId, String token, String newDescription) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(publicId).orElseThrow(() ->
+                new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)
+        );
+        if (!bookletEntity.getUploaderUser().getUsername().equals(username)){
+            throw new SystemServiceException(ExceptionMessages.FORBIDDEN_EDIT_BOOKLET_DESCRIPTION_REQUEST.getMessage(),HttpStatus.FORBIDDEN);
+        }
+        bookletEntity.setText(newDescription);
+        BookletEntity savedEntity;
+        try {
+            savedEntity=bookletRepository.save(bookletEntity);
+        }catch (Exception e){
+            throw new SystemServiceException(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        UpdateBookletDescriptionResponse response = UpdateBookletDescriptionResponse.builder()
+                .description(savedEntity.getText()).build();
+
+        return bookletUtil.createResponse(response,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<BaseApiResponse> isEnableToEdit(String publicId, String token) {
+        String username = bookletUtil.getUsernameFromToken(token);
+        BookletEntity bookletEntity = bookletRepository.findByPublicId(publicId).orElseThrow(() ->
+                new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)
+        );
+        if (!bookletEntity.getUploaderUser().getUsername().equals(username)){
+            throw new SystemServiceException(ExceptionMessages.FORBIDDEN_EDIT_BOOKLET_DESCRIPTION_REQUEST.getMessage(),HttpStatus.FORBIDDEN);
+        }
+        return bookletUtil.createResponse(bookletEntity.getText(),HttpStatus.OK);
+    }
 }
