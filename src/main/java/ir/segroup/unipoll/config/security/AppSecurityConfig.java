@@ -62,6 +62,9 @@ public class AppSecurityConfig {
                     requests.requestMatchers(antMatcher("/booklet/save/**")).hasAnyRole(STUDENT,ADMIN,INSTRUCTOR); // اضافه کردن جزوه به لیست جزوه های مورد علاقه
                     requests.requestMatchers(antMatcher("/booklet/dissave/**")).hasAnyRole(STUDENT,ADMIN,INSTRUCTOR); // حذف جزوه از لیست جزوه های مورد علاقه
                     requests.requestMatchers(antMatcher("/booklet/{publicId}")).permitAll(); //اطلاعات جزوه
+                    requests.requestMatchers(antMatcher("/booklet/edit-description/{publicId}")).hasAnyRole(STUDENT,INSTRUCTOR); // ادیت جزوه
+                    requests.requestMatchers(antMatcher("/booklet/enable-to-edit/{publicId}")).hasAnyRole(STUDENT,INSTRUCTOR);// ادیت جزوه
+                    requests.requestMatchers(antMatcher("/booklet/uploaded-booklet/**")).hasAnyRole(STUDENT,INSTRUCTOR); // دریافت لیست جزوه های آپلود شده
                     requests.requestMatchers(antMatcher("/academic-department/**")).permitAll();
                     requests.requestMatchers(antMatcher("/instructor/**")).permitAll();                
                     requests.requestMatchers(antMatcher("/rate/**")).hasAnyRole(ADMIN,STUDENT);

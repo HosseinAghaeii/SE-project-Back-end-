@@ -332,6 +332,77 @@ public class BookletController {
         return bookletService.removeFromFavoriteBooklets(publicId,token);
     }
 
+    @GetMapping("/uploaded-booklet")
+    @Operation(summary = "Get list of uploaded booklets")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Return list of uploaded booklets",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Username not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "This api authenticate for Student and instructor",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
+            )
+    })
+    public ResponseEntity<BaseApiResponse> getUploadedBooklets(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return bookletService.getUploadedBooklets(token);
+    }
 
+    @PutMapping("/edit-description/{publicId}")
+    @Operation(summary = "Update booklet description")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "401",
+                    description = "Only teachers and students can call this api.If another user try to call this methode app send 401 code",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "403",
+                    description = "When the teacher or student who does not own this booklet tries to change the description",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Booklet with this public id is not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "200",
+                    description = "Booklet description edited successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "500",
+                    description = "System Default Exception (SDE), or when database IO exception occurred",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
+    public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId, @RequestBody String newDescription, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return bookletService.editDescription(publicId, token, newDescription);
+    }
+
+    @GetMapping("/enable-to-edit/{publicId}")
+    @Operation(summary = "Specifies whether the user is allowed to change the booklet description or not")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "401",
+                    description = "Only teachers and students can call this api.If another user try to call this methode or jwt is wrong app send 401 code",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "403",
+                    description = "When the teacher or student who does not own this booklet tries to change the description",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Booklet with this public id is not found",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+            @ApiResponse(responseCode = "200",
+                    description = "Return old description successfully",
+                    content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
+    })
+    public ResponseEntity<BaseApiResponse> isEnableToEdit(@PathVariable String publicId,HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        return bookletService.isEnableToEdit(publicId,token);
+    }
 
 }
