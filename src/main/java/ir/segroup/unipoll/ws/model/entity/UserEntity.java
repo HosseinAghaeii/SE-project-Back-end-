@@ -32,7 +32,7 @@ public class UserEntity implements Serializable {
 
     private String profilePhoto;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "favorite_booklets",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -40,7 +40,7 @@ public class UserEntity implements Serializable {
     )
     private List<BookletEntity> favoriteBooklets;
 
-    @ManyToMany(mappedBy = "likes",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "likes",fetch = FetchType.LAZY)
     private List<BookletEntity> likedBooklets;
 
     @OneToMany(mappedBy = "uploaderUser",fetch = FetchType.EAGER)
