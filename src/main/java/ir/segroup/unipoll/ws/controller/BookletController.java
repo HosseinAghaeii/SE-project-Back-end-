@@ -143,7 +143,7 @@ public class BookletController {
         return bookletService.likeABooklet(token,bookletPublicId);
     }
 
-    @DeleteMapping ("/dislike/{bookletPublicId}")
+    @PutMapping ("/dislike/{bookletPublicId}")
     @Operation(summary = "Unlike a booklet")
     @ApiResponses(value = {
             @ApiResponse(
@@ -297,7 +297,7 @@ public class BookletController {
         return bookletService.addToFavoriteBooklets(publicId,token);
     }
 
-    @DeleteMapping("/dissave/{publicId}")
+    @PutMapping("/dissave/{publicId}")
     @Operation(summary = "Remove one booklet to favorite booklets of one user")
     @ApiResponses(value = {
             @ApiResponse(

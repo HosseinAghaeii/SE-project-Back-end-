@@ -24,7 +24,7 @@ public class BookletEntity implements Serializable {
 
     private String text;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "term_id")
     private TermEntity termEntity;
 
