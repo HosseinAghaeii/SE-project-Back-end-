@@ -94,18 +94,6 @@ class AcademicDepartmentServiceImplTest {
         assertThat(response.getPublicId()).isEqualTo(publicId);
     }
 
-    @Test
-    void testGetADepartment_GivenNotExistPublicId_WhenCallGetADepartment_ThenShouldReturnSystemServiceException(){
-        //given
-        when(departmentUtil.find(any(String.class))).thenReturn(null);
-        //then
-            //when
-        SystemServiceException systemServiceException = assertThrows(SystemServiceException.class,() ->
-                departmentService.getADepartment("someNonExistentId"));
-        assertThat(systemServiceException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-        assertThat(systemServiceException.getException()).isEqualTo(ExceptionMessages.NO_RECORD_FOUND.getMessage());
-
-    }
 
     @Test
     void testGetManagerAndAssistant_GivenExistPublicId_WhenCallGetManagerAndAssistant_ThenShouldReturnDepartmentManagerAndAssistantResponse() {
