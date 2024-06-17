@@ -4,9 +4,6 @@ package ir.segroup.unipoll.shared.utils;
 import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -18,10 +15,8 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 class UtilTest {
-    @InjectMocks
-    Util util ;
+    Util util = new Util() ;
 
     @Test
     void test_GiveTrueInput_WhenCallCreateResponse_ThenReturnTrueResponseEntity(){
