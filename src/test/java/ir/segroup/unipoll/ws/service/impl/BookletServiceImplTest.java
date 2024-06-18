@@ -7,8 +7,14 @@ import ir.segroup.unipoll.shared.utils.BookletUtil;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
 import ir.segroup.unipoll.ws.model.entity.UserEntity;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
+
+import ir.segroup.unipoll.ws.model.response.DepartmentInstructorResponse;
+import ir.segroup.unipoll.ws.repository.UserRepository;
+import jakarta.persistence.ManyToOne;
+
 import ir.segroup.unipoll.ws.repository.BookletRepository;
 import ir.segroup.unipoll.ws.repository.UserRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,8 +68,9 @@ class BookletServiceImplTest {
         when(bookletUtil.getUsernameFromToken(any(String.class))).thenReturn(username);
         when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.empty());
         //then
-        //when
+       
         SystemServiceException systemServiceException = assertThrows(SystemServiceException.class, () ->
+                 //when
                 bookletService.getFavoriteBooklets(username));
         assertThat(systemServiceException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(systemServiceException.getException()).isEqualTo(ExceptionMessages.NO_RECORD_FOUND.getMessage());
@@ -142,7 +149,9 @@ class BookletServiceImplTest {
         //given
         when(bookletUtil.getUsernameFromToken(any(String.class))).thenReturn(username);
         when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.ofNullable(userEntity));
+
         when(bookletUtil.convert(any(BookletEntity.class), any(String.class))).thenReturn(bookletResponse);
+
         when(bookletUtil.createResponse(any(), any(HttpStatus.class))).thenReturn(responseOk);
         //when
         ResponseEntity<BaseApiResponse> favoriteBooklet = bookletService.getFavoriteBooklets("token");
