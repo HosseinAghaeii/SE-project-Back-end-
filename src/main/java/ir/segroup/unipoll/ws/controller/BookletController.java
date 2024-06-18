@@ -404,5 +404,4 @@ public class BookletController {
         String token = request.getHeader("Authorization");
         return bookletService.isEnableToEdit(publicId,token);
     }
-
 }
