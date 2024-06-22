@@ -63,7 +63,7 @@ public class InstructorServiceImpl implements InstructorService {
         if (instructorEntity.isEmpty())
             throw new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(),HttpStatus.NOT_FOUND);
 
-        List<InstructorCourseResponse> instructorCourseResponse = instructorEntity.get().getIcEntities().stream()
+        List<InstructorCourseResponse> instructorCourseResponse = instructorEntity.get().getInstructorCourseEntities().stream()
                 .map(instructorCourseUtil::convert)
                 .toList();
         return instructorCourseUtil.createResponse(instructorCourseResponse,HttpStatus.OK);

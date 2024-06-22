@@ -3,7 +3,7 @@ package ir.segroup.unipoll.shared.utils;
 import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.ws.model.entity.BookletCommentEntity;
-import ir.segroup.unipoll.ws.model.entity.ICCommentEntity;
+import ir.segroup.unipoll.ws.model.entity.InstructorCourseCommentEntity;
 import ir.segroup.unipoll.ws.model.request.BookletCommentRequest;
 import ir.segroup.unipoll.ws.model.request.CommentCRequest;
 import ir.segroup.unipoll.ws.model.response.CommentResponse;
@@ -34,8 +34,8 @@ public class CommentUtil extends Util {
         this.userRepository = userRepository;
     }
 
-    public ICCommentEntity convert(CommentCRequest request, String username) {
-        return ICCommentEntity.builder()
+    public InstructorCourseCommentEntity convert(CommentCRequest request, String username) {
+        return InstructorCourseCommentEntity.builder()
                 .text(request.getText())
                 .icEntity(icRepository.findByPublicId(request.getIcPublicId()).orElseThrow(() ->
                         new SystemServiceException(ExceptionMessages.NO_RECORD_FOUND.getMessage(), HttpStatus.NOT_FOUND)))
@@ -66,7 +66,7 @@ public class CommentUtil extends Util {
                 .build();
     }
 
-    public CommentResponse convert(ICCommentEntity entity) {
+    public CommentResponse convert(InstructorCourseCommentEntity entity) {
         return CommentResponse.builder()
                 .writerName(getWriterName(entity.isUnknown(),entity.getUserEntity().getFirstname(),entity.getUserEntity().getLastname()))
                 .text(entity.getText())

@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Table(name = "course_comments")
-public class ICCommentEntity implements Serializable {
+public class InstructorCourseCommentEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

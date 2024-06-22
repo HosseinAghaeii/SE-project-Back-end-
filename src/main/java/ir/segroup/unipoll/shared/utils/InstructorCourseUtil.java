@@ -1,17 +1,10 @@
 package ir.segroup.unipoll.shared.utils;
 
-import ir.segroup.unipoll.ws.model.entity.BookletEntity;
 import ir.segroup.unipoll.ws.model.entity.InstructorCourseEntity;
 import ir.segroup.unipoll.ws.model.entity.RateEntity;
-import ir.segroup.unipoll.ws.model.response.BookletResponse;
 import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
-import ir.segroup.unipoll.ws.repository.BookletRepository;
-import ir.segroup.unipoll.ws.repository.InstructorCourseRepository;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.List;
 
 import static org.apache.commons.math3.util.Precision.round;

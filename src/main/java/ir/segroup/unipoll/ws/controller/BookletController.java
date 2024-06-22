@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @MultipartConfig
 @Tag(name = "booklet",description = "booklet endpoints")
 public class BookletController {
+    private static final String AUTHORIZATION = "Authorization";
     private final BookletService bookletService;
 
     public BookletController(BookletService bookletService) {
@@ -85,7 +86,7 @@ public class BookletController {
     public ResponseEntity<BaseApiResponse> uploadBooklet(@RequestParam("file") MultipartFile booklet,
                                                          @ModelAttribute("bookletRequest") BookletRequest bookletRequest,
                                                          HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.uploadBooklet(booklet, bookletRequest, token);
     }
 
@@ -104,7 +105,7 @@ public class BookletController {
             )
     })
     public ResponseEntity<BaseApiResponse> getTenTopBooklets(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.getTenTopBooklets(token);
     }
 
@@ -139,7 +140,7 @@ public class BookletController {
             )
     })
     public ResponseEntity<BaseApiResponse> likeABooklet(HttpServletRequest request, @PathVariable String bookletPublicId){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.likeABooklet(token,bookletPublicId);
     }
 
@@ -173,7 +174,7 @@ public class BookletController {
             )
     })
     public ResponseEntity<BaseApiResponse> unlikeABooklet(HttpServletRequest request, @PathVariable String bookletPublicId){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.unlikeABooklet(token,bookletPublicId);
     }
 
@@ -208,7 +209,7 @@ public class BookletController {
             )
     })
     public ResponseEntity<BaseApiResponse> deleteABooklet(HttpServletRequest request, @PathVariable String publicId){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.deleteABooklet(publicId, token);
     }
 
@@ -237,7 +238,7 @@ public class BookletController {
             )
     })
     public ResponseEntity<BaseApiResponse> getFavoriteBooklets(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.getFavoriteBooklets(token);
     }
 
@@ -257,7 +258,7 @@ public class BookletController {
             )
     })
     public ResponseEntity<BaseApiResponse> getABooklet (HttpServletRequest request, @PathVariable String publicId) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.getABooklet(token, publicId);
 
     }
@@ -293,7 +294,7 @@ public class BookletController {
     })
     public ResponseEntity<BaseApiResponse> addToFavoriteBooklets(HttpServletRequest request,
                                                                  @PathVariable String publicId){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.addToFavoriteBooklets(publicId,token);
     }
 
@@ -328,7 +329,7 @@ public class BookletController {
     })
     public ResponseEntity<BaseApiResponse> removeFromFavoriteBooklets(HttpServletRequest request,
                                                                  @PathVariable String publicId){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.removeFromFavoriteBooklets(publicId,token);
     }
 
@@ -357,7 +358,7 @@ public class BookletController {
             )
     })
     public ResponseEntity<BaseApiResponse> getUploadedBooklets(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.getUploadedBooklets(token);
     }
 
@@ -380,7 +381,7 @@ public class BookletController {
                     description = "System Default Exception (SDE), or when database IO exception occurred",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
     public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId, @RequestBody String newDescription, HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.editDescription(publicId, token, newDescription);
     }
 
@@ -401,7 +402,7 @@ public class BookletController {
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}),
     })
     public ResponseEntity<BaseApiResponse> isEnableToEdit(@PathVariable String publicId,HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return bookletService.isEnableToEdit(publicId,token);
     }
 }

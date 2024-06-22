@@ -1,7 +1,5 @@
 package ir.segroup.unipoll.ws.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +24,7 @@ public class InstructorEntity extends UserEntity{
     private String websiteLink;
 
     @OneToMany(mappedBy = "instructorEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<InstructorCourseEntity> icEntities;
+    private List<InstructorCourseEntity> instructorCourseEntities;
 
     @ManyToMany(mappedBy = "instructorEntities",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AcademicDepartmentEntity> academicDeptEntities; // list of academic dept that instructor worked on it.

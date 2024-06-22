@@ -1,7 +1,6 @@
 package ir.segroup.unipoll.shared.utils;
 
 import ir.segroup.unipoll.ws.model.entity.*;
-import ir.segroup.unipoll.ws.model.response.CommentResponse;
 import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class InstructorCourseUtilTest {
@@ -42,7 +39,7 @@ class InstructorCourseUtilTest {
 
     List<RateEntity> rateEntities = new ArrayList<>();
 
-    List<ICCommentEntity> commentCEntities = new ArrayList<>();
+    List<InstructorCourseCommentEntity> commentCEntities = new ArrayList<>();
 
     Method calculateRate;
 
@@ -57,7 +54,7 @@ class InstructorCourseUtilTest {
                 .description("desc")
                 .bookletEntities(bookletEntities)
                 .rateEntities(rateEntities)
-                .commentCEntities(commentCEntities)
+                .instructorCourseCommentEntities(commentCEntities)
                 .build();
 
         rateEntity1 = RateEntity.builder()

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.ws.model.request.CommentCRequest;
-import ir.segroup.unipoll.ws.service.ICCommentService;
+import ir.segroup.unipoll.ws.service.InstructorCourseCommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/comment-c")
 @Tag(name = "Instructor course comment controller")
-public class ICCommentController {
+public class InstructorCourseCommentController {
 
-    private final ICCommentService commentCService;
+    private final InstructorCourseCommentService commentCService;
 
-    public ICCommentController(ICCommentService commentCService) {
+    public InstructorCourseCommentController(InstructorCourseCommentService commentCService) {
         this.commentCService = commentCService;
     }
 
