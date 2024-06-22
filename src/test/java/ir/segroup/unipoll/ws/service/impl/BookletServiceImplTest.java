@@ -4,8 +4,8 @@ import ir.segroup.unipoll.config.exception.SystemServiceException;
 import ir.segroup.unipoll.config.exception.constant.ExceptionMessages;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import ir.segroup.unipoll.shared.utils.BookletUtil;
-import ir.segroup.unipoll.ws.model.entity.BookletEntity;
-import ir.segroup.unipoll.ws.model.entity.UserEntity;
+import ir.segroup.unipoll.ws.model.entity.*;
+import ir.segroup.unipoll.ws.model.response.ARateResponse;
 import ir.segroup.unipoll.ws.model.response.BookletResponse;
 
 import ir.segroup.unipoll.ws.model.response.DepartmentInstructorResponse;
@@ -45,6 +45,12 @@ class BookletServiceImplTest {
     private String username;
     private UserEntity userEntity;
 
+    private String pId;
+
+    private String token;
+
+    private BookletEntity bookletEntity;
+
     @BeforeEach
     void setUp() {
         String publicId = UUID.randomUUID().toString().replace("-", "");
@@ -53,7 +59,8 @@ class BookletServiceImplTest {
         String lastname = "Hosseinpour";
         String password = "password";
         String role = "student";
-
+        pId = UUID.randomUUID().toString().replace("-", "");
+        token = "token";
         userEntity = new UserEntity();
         userEntity.setPublicId(publicId);
         userEntity.setFirstname(firstname);
@@ -164,5 +171,96 @@ class BookletServiceImplTest {
         assertThat(response.get(0).getPublicId()).isEqualTo(bookletPublicId);
     }
 
+    @Test
+    void testGetUploadedBooklets_GivenValidToken_WhenCallGetUploadedBooklets_ThenShouldReturnResponse() {
+        String bookletPublicId = UUID.randomUUID().toString().replace("-", "");
+        BookletEntity bookletEntity = BookletEntity.builder()
+                .publicId(bookletPublicId)
+                .build();
+        userEntity.setUploadedBooklets(List.of(bookletEntity));
 
+        BookletResponse bookletResponse = BookletResponse.builder()
+                .publicId(bookletPublicId)
+                .build();
+        List<BookletResponse> bookletResponseList = new ArrayList<>();
+        bookletResponseList.add(bookletResponse);
+
+        BaseApiResponse baseApiResponse = BaseApiResponse.builder()
+                .action(true)
+                .message("")
+                .date(new Date())
+                .result(bookletResponseList)
+                .build();
+
+        ResponseEntity<BaseApiResponse> responseOk = new ResponseEntity<>(baseApiResponse, HttpStatus.OK);
+
+        //given
+        when(bookletUtil.getUsernameFromToken(any(String.class))).thenReturn(username);
+        when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.ofNullable(userEntity));
+
+        when(bookletUtil.convert(any(BookletEntity.class), any(String.class))).thenReturn(bookletResponse);
+
+        when(bookletUtil.createResponse(any(), any(HttpStatus.class))).thenReturn(responseOk);
+        //when
+        ResponseEntity<BaseApiResponse> uploadedBooklet = bookletService.getUploadedBooklets("token");
+        //then
+        assertThat(uploadedBooklet).isNotNull();
+        assertThat(uploadedBooklet.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        List<BookletResponse> response = (List<BookletResponse>) uploadedBooklet.getBody().getResult();
+        assertThat(response.size()).isEqualTo(1);
+        assertThat(response.get(0).getPublicId()).isEqualTo(bookletPublicId);
+    }
+
+    @Test
+    void testGetABooklet_GivenInValidToken_WhenCallGetABooklet_ThenShouldReturnSystemServiceException(){
+        //given
+        when(bookletUtil.getUsernameFromToken(any(String.class))).thenReturn(null);
+        //then
+        //when
+        SystemServiceException systemServiceException = assertThrows(SystemServiceException.class,() ->
+                bookletService.getABooklet("someInvalidToken",pId));
+        assertThat(systemServiceException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(systemServiceException.getException()).isEqualTo(ExceptionMessages.NO_RECORD_FOUND.getMessage());
+    }
+
+    @Test
+    void testGetABooklet_GivenValidTokenAndPublicId_WhenCallGetABooklet_ThenShouldReturnBookletResponse(){
+        bookletEntity = BookletEntity.builder()
+                .id(1)
+                .publicId("publicId")
+                .text("t")
+                .filePath("f")
+                .build();
+
+        BookletResponse bookletResponse = BookletResponse.builder()
+                .publicId("publicId")
+                .term("1")
+                .description("d")
+                .uploaderLastname("ul")
+                .instructorLastname("il")
+                .build();
+
+        BaseApiResponse baseApiResponse = BaseApiResponse.builder()
+                .action(true)
+                .message("")
+                .date(new Date())
+                .result(bookletResponse)
+                .build();
+
+        ResponseEntity<BaseApiResponse> responseOk = new ResponseEntity<>(baseApiResponse, HttpStatus.OK);
+
+        //given
+        when(bookletUtil.getUsernameFromToken(any(String.class))).thenReturn(username);
+        when(bookletRepository.findByPublicId(any())).thenReturn(Optional.ofNullable(bookletEntity));
+        when(bookletUtil.convert(any(BookletEntity.class),any(String.class))).thenReturn(bookletResponse);
+        when(bookletUtil.createResponse(any(), any(HttpStatus.class))).thenReturn(responseOk);
+        //when
+        ResponseEntity<BaseApiResponse> getBooklet = bookletService.getABooklet(token, pId);
+        //then
+        assertThat(getBooklet).isNotNull();
+        assertThat(getBooklet.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BookletResponse response = (BookletResponse) getBooklet.getBody().getResult();
+        assertThat(response.getPublicId()).isEqualTo("publicId");
+    }
 }
