@@ -22,7 +22,7 @@ public class TermEntity implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "termEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<ICCommentEntity> commentCEntities;
+    private List<InstructorCourseCommentEntity> instructorCourseCommentEntities;
 
     @OneToMany(mappedBy = "termEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<BookletCommentEntity> bookletCommentEntities;

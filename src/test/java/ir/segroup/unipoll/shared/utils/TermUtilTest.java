@@ -2,13 +2,9 @@ package ir.segroup.unipoll.shared.utils;
 
 import ir.segroup.unipoll.ws.model.entity.BookletCommentEntity;
 import ir.segroup.unipoll.ws.model.entity.BookletEntity;
-import ir.segroup.unipoll.ws.model.entity.ICCommentEntity;
+import ir.segroup.unipoll.ws.model.entity.InstructorCourseCommentEntity;
 import ir.segroup.unipoll.ws.model.entity.TermEntity;
-import ir.segroup.unipoll.ws.model.response.InstructorCourseResponse;
 import ir.segroup.unipoll.ws.model.response.TermResponse;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class TermUtilTest {
@@ -29,7 +24,7 @@ class TermUtilTest {
 
     TermEntity termEntity = new TermEntity();
 
-    List<ICCommentEntity> commentCEntities = new ArrayList<>();
+    List<InstructorCourseCommentEntity> commentCEntities = new ArrayList<>();
 
     List<BookletCommentEntity> bookletCommentEntities = new ArrayList<>();
 
@@ -40,7 +35,7 @@ class TermUtilTest {
         termEntity = TermEntity.builder()
                 .publicId("publicId")
                 .name("term")
-                .commentCEntities(commentCEntities)
+                .instructorCourseCommentEntities(commentCEntities)
                 .bookletCommentEntities(bookletCommentEntities)
                 .bookletEntities(bookletEntities)
                 .build();

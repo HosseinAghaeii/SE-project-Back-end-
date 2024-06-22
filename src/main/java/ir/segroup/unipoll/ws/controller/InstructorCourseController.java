@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/instructor-course")
 @Tag(name = "Instructor Course controller")
 public class InstructorCourseController {
+    private static final String AUTHORIZATION = "Authorization";
     private final InstructorCourseService instructorCourseService;
 
     public InstructorCourseController(InstructorCourseService instructorCourseService) {
@@ -65,7 +66,7 @@ public class InstructorCourseController {
                     description = "Return all booklets of a course of instructor successfully",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
     public ResponseEntity<BaseApiResponse> getInstructorCourseBooklets(HttpServletRequest request, @PathVariable String publicId) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return instructorCourseService.getInstructorCourseBooklets(token, publicId);
     }
 
@@ -91,7 +92,7 @@ public class InstructorCourseController {
     public ResponseEntity<BaseApiResponse> editDescription(@PathVariable String publicId,
                                                            @RequestBody String newDescription,
                                                            HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return instructorCourseService.editDescription(publicId, token, newDescription);
 
     }
@@ -115,7 +116,7 @@ public class InstructorCourseController {
                     description = "System Default Exception (SDE), or when database IO exception occurred",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")})})
     public ResponseEntity<BaseApiResponse> isEnableToEdit(@PathVariable String publicId,HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(AUTHORIZATION);
         return instructorCourseService.isEnableToEdit(publicId,token);
     }
 

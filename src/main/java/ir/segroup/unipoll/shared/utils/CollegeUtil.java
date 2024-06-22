@@ -1,11 +1,8 @@
 package ir.segroup.unipoll.shared.utils;
 
 import ir.segroup.unipoll.ws.model.entity.CollegeEntity;
-import ir.segroup.unipoll.ws.model.entity.CourseEntity;
 import ir.segroup.unipoll.ws.model.request.CollegeRequest;
-import ir.segroup.unipoll.ws.model.request.CourseRequest;
 import ir.segroup.unipoll.ws.model.response.CollegeResponse;
-import ir.segroup.unipoll.ws.model.response.CourseResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

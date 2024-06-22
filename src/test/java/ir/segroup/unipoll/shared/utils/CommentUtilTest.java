@@ -42,7 +42,7 @@ class CommentUtilTest {
     @Mock
     UserRepository userRepository;
     CommentCRequest commentCRequest = new CommentCRequest();
-    ICCommentEntity icCommentEntity = new ICCommentEntity();
+    InstructorCourseCommentEntity icCommentEntity = new InstructorCourseCommentEntity();
     InstructorCourseEntity icEntity = new InstructorCourseEntity();
     CommentResponse commentResponse = new CommentResponse();
     TermEntity termEntity = new TermEntity();
@@ -63,7 +63,7 @@ class CommentUtilTest {
                 .icPublicId("icPublicId")
                 .unknown(true)
                 .build();
-        icCommentEntity = ICCommentEntity.builder()
+        icCommentEntity = InstructorCourseCommentEntity.builder()
                 .text(commentCRequest.getText())
                 .icEntity(icEntity)
                 .userEntity(userEntity)
@@ -140,7 +140,7 @@ class CommentUtilTest {
         when(termRepository.findByPublicId(any())).thenReturn(Optional.of(termEntity));
         when(userRepository.findByUsername(any())).thenReturn(Optional.of(userEntity));
         //when
-        ICCommentEntity response = util.convert(commentCRequest,"Admin");
+        InstructorCourseCommentEntity response = util.convert(commentCRequest,"Admin");
         //then
         assertThat(response.isUnknown()).isEqualTo(commentCRequest.isUnknown());
         assertThat(response.getText()).isEqualTo(commentCRequest.getText());

@@ -1,12 +1,17 @@
 package ir.segroup.unipoll.shared.utils;
 
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import ir.segroup.unipoll.config.exception.SystemServiceException;
+import ir.segroup.unipoll.config.security.constant.SecurityConstants;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
@@ -47,7 +52,15 @@ class UtilTest {
     @Test
     void test_GiveValidToken_WhenCallGetUsernameFromToken_ThenReturnUsername(){
         //give
-        String token = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJVbmlQb2xsIiwic3ViIjoiandUb2tlbiIsInVzZXJuYW1lIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MTg2MjUwNjgsImV4cCI6MTcxODY1NTA2OH0.0EQ3yPBOtYgCp8I1ib4NMJ-zXnfX8MHa9sM79Z69om-EUsiGMpEHsOp9CYd2Vo5b0cz8RtJzUNG2lKRb9ph4wg";
+        SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
+        String token = Jwts.builder()
+                .issuer("UniPoll")
+                .subject("jwToken")
+                .claim("username", "admin")
+                .claim("authorities", "ADMIN")
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + 30000000))
+                .signWith(key).compact();
         //when
         String response = util.getUsernameFromToken(token);
         //then
