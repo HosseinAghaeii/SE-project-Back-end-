@@ -9,6 +9,8 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -32,7 +34,7 @@ public class UserEntity implements Serializable {
 
     private String profilePhoto;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "favorite_booklets",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -40,17 +42,17 @@ public class UserEntity implements Serializable {
     )
     private List<BookletEntity> favoriteBooklets;
 
-    @ManyToMany(mappedBy = "likes",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "likes",fetch = FetchType.LAZY)
     private List<BookletEntity> likedBooklets;
 
-    @OneToMany(mappedBy = "uploaderUser",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "uploaderUser",fetch = FetchType.EAGER)
     private List<BookletEntity> uploadedBooklets;
 
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<CommentBEntity> commentBEntities;
+    private List<BookletCommentEntity> bookletCommentEntities;
 
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<CommentCEntity> commentCEntities;
+    private List<InstructorCourseCommentEntity> instructorCourseCommentEntities;
 
     public UserEntity(String id,String firstname, String lastname, String username, String encryptedPassword, String role) {
         this.id = Long.parseLong(id);

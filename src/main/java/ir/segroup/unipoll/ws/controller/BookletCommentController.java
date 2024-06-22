@@ -6,25 +6,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import ir.segroup.unipoll.shared.model.BaseApiResponse;
-import ir.segroup.unipoll.ws.model.request.CommentCRequest;
-import ir.segroup.unipoll.ws.service.CommentCService;
+import ir.segroup.unipoll.ws.model.request.BookletCommentRequest;
+import ir.segroup.unipoll.ws.service.BookletCommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/comment-c")
-@Tag(name = "Instructor course comment controller")
-public class CommentCController {
+@RequestMapping("/comment-b")
+@Tag(name = "Booklet comment controller")
+public class BookletCommentController {
 
-    private final CommentCService commentCService;
+    private final BookletCommentService bookletCommentService;
 
-    public CommentCController(CommentCService commentCService) {
-        this.commentCService = commentCService;
+    public BookletCommentController(BookletCommentService bookletCommentService) {
+        this.bookletCommentService = bookletCommentService;
     }
 
-    @PostMapping
-    @Operation(summary = "Create comment for instructor curse")
+    @PostMapping()
+    @Operation(summary = "Create comment for Booklet")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "401",
@@ -33,7 +33,7 @@ public class CommentCController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "when ic public id or term public id not found",
+                    description = "when booklet public id or term public id not found",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(
@@ -47,17 +47,18 @@ public class CommentCController {
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             )
     })
-    public ResponseEntity<BaseApiResponse> createComment(@RequestBody CommentCRequest commentCRequest, HttpServletRequest request){
+    public ResponseEntity<BaseApiResponse> createComment(@RequestBody BookletCommentRequest bookletCommentRequest,
+                                                         HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        return commentCService.createComment(commentCRequest,token);
+        return bookletCommentService.createComment(bookletCommentRequest,token);
     }
 
-    @GetMapping("/{icPublicId}")
-    @Operation(summary = "Get comments of one instructor course. this methode have a query param: firstTopFive. default value = false")
+    @GetMapping("/{publicId}")
+    @Operation(summary = "Get comments of one booklet. this methode have a query param: firstTopFive. default value = false")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "404",
-                    description = "when ic public id or term public id not found",
+                    description = "when booklet public id not found",
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             ),
             @ApiResponse(
@@ -71,9 +72,8 @@ public class CommentCController {
                     content = {@Content(mediaType = "application/json"), @Content(mediaType = "application/xml")}
             )
     })
-    public ResponseEntity<BaseApiResponse> getAIcComments(@PathVariable String icPublicId,
-                                                          @RequestParam(defaultValue = "false") boolean filterTopFive,
-                                                          @RequestParam(defaultValue = "null") String term){
-        return commentCService.getAIcComments(icPublicId,filterTopFive,term);
+    public ResponseEntity<BaseApiResponse> getAIcComments(@PathVariable String publicId,
+                                                          @RequestParam(defaultValue = "false") boolean filterTopFive){
+        return bookletCommentService.getABookletComments(publicId,filterTopFive);
     }
 }

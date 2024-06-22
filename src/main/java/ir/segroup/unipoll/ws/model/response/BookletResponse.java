@@ -1,6 +1,7 @@
 package ir.segroup.unipoll.ws.model.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Setter
@@ -45,4 +46,11 @@ public class BookletResponse {
             "2-false" +
             "3-null: request send without jwt token",example = "حسین")
     private Boolean isLiked;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String description;
+
+    private boolean teacherLike;
+
+
 }

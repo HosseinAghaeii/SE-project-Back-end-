@@ -1,10 +1,7 @@
 package ir.segroup.unipoll.ws.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name ="instructor_course")
 public class InstructorCourseEntity implements Serializable {
     @Id
@@ -33,12 +31,12 @@ public class InstructorCourseEntity implements Serializable {
     @Column(columnDefinition = "LONGTEXT")
     private String description;
 
-    @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER)
     private List<BookletEntity> bookletEntities;
 
     @OneToMany(mappedBy = "instructorCourseEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<RateEntity> rateEntities;
 
     @OneToMany(mappedBy = "icEntity",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<CommentCEntity> commentCEntities;
+    private List<InstructorCourseCommentEntity> instructorCourseCommentEntities;
 }

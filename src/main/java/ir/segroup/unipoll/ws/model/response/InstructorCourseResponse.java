@@ -16,4 +16,5 @@ public class InstructorCourseResponse {
     private String description;
     private int unit;
     private double rate;
+    private int rate_num;
 }

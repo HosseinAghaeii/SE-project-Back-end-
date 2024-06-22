@@ -3,11 +3,9 @@ package ir.segroup.unipoll.shared.utils;
 import ir.segroup.unipoll.ws.model.entity.InstructorEntity;
 import ir.segroup.unipoll.ws.model.entity.StudentEntity;
 import ir.segroup.unipoll.ws.model.entity.UserEntity;
-import ir.segroup.unipoll.ws.model.request.UserRequest;
 import ir.segroup.unipoll.ws.model.response.InstructorResponse;
 import ir.segroup.unipoll.ws.model.response.StudentResponse;
 import ir.segroup.unipoll.ws.model.response.UserResponse;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component

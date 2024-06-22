@@ -2,8 +2,6 @@ package ir.segroup.unipoll.ws.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Table(name = "course_comments")
-public class CommentCEntity implements Serializable {
+public class InstructorCourseCommentEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

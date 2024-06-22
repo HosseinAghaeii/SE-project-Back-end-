@@ -76,6 +76,8 @@ public class BookletUtil extends Util {
                 .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
                 .term(bookletEntity.getTermEntity().getName())
                 .likeNumber(bookletEntity.getLikes().size())
+                .description(bookletEntity.getText())
+                .teacherLike(isLikedByItsTeacher(bookletEntity))
                 .build();
         if (username == null) {
             response.setIsLiked(null);
@@ -98,6 +100,11 @@ public class BookletUtil extends Util {
 
     }
 
+    private boolean isLikedByItsTeacher(BookletEntity entity){
+        String teacherUsername =  entity.getInstructorCourseEntity().getInstructorEntity().getUsername();
+        return entity.getLikes().stream().anyMatch(userEntity -> userEntity.getUsername().equals(teacherUsername));
+    }
+
     public BookletResponse convert(BookletEntity bookletEntity, String username) {
         BookletResponse response = BookletResponse.builder()
                 .publicId(bookletEntity.getPublicId())
@@ -108,6 +115,8 @@ public class BookletUtil extends Util {
                 .uploaderLastname(bookletEntity.getUploaderUser().getLastname())
                 .term(bookletEntity.getTermEntity().getName())
                 .likeNumber(bookletEntity.getLikes().size())
+                .description(bookletEntity.getText())
+                .teacherLike(isLikedByItsTeacher(bookletEntity))
                 .build();
         if (username == null) {
             response.setIsLiked(null);

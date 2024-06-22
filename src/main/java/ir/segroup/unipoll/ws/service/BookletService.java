@@ -10,4 +10,13 @@ public interface BookletService  {
     ResponseEntity<BaseApiResponse> uploadBooklet(MultipartFile booklet, BookletRequest bookletRequest, String token);
     ResponseEntity<BaseApiResponse> getTenTopBooklets(String token);
     ResponseEntity<BaseApiResponse> likeABooklet(String token,String bookletPublicId);
+    ResponseEntity<BaseApiResponse> unlikeABooklet(String token, String bookletPublicId);
+    ResponseEntity<BaseApiResponse> deleteABooklet(String publicId, String token);
+    ResponseEntity<BaseApiResponse> getFavoriteBooklets(String token);
+    ResponseEntity<BaseApiResponse> getABooklet(String token, String publicId);
+    ResponseEntity<BaseApiResponse> addToFavoriteBooklets(String publicId, String token);
+    ResponseEntity<BaseApiResponse> removeFromFavoriteBooklets(String publicId, String token);
+    ResponseEntity<BaseApiResponse> getUploadedBooklets(String token);
+    ResponseEntity<BaseApiResponse> editDescription(String publicId, String token, String newDescription);
+    ResponseEntity<BaseApiResponse> isEnableToEdit(String publicId, String token);
 }

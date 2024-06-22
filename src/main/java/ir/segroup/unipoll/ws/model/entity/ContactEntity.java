@@ -1,10 +1,7 @@
 package ir.segroup.unipoll.ws.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -13,6 +10,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
 @Table(name = "comments")
 public class ContactEntity implements Serializable {
 
